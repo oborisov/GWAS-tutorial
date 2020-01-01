@@ -1,24 +1,31 @@
 # Source: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6001694/
-# mind - individual missingness
+# individual missingness (mind) excluding
 # geno - SNP missingness
 # maf - minor allele frequency (MAF)
 # hwe - deviations from Hardy–Weinberg equilibrium (HWE)
+# user can set maf, geno, mind by passing 2nd 3rd and 4th argument to maf_geno_mind_hwe
 maf_geno_mind_hwe () {
   bfile=$1
+  maf_set="${maf_set:-0.01}"
+  geno_set="${geno_set:-0.02}"
+  mind_sed="${mind_sed:-0.02}"
   plink --bfile ${bfile} \
-  --maf 0.01 --geno 0.2 --hwe 1e-6 \
+  --maf ${maf_set} \
+  --geno 0.2 \
+  --hwe 1e-6 \
   --allow-no-sex \
   --make-bed --out ${bfile}_geno02
   plink --bfile ${bfile}_geno02 \
-  --hwe 1e-10 include-nonctrl --mind 0.2 \
+  --hwe 1e-10 include-nonctrl \
+  --mind 0.2 \
   --allow-no-sex \
   --make-bed --out ${bfile}_geno02_mind02
   plink --bfile ${bfile}_geno02_mind02 \
-  --geno 0.02 \
+  --geno ${geno_set} \
   --allow-no-sex \
   --make-bed --out ${bfile}_geno02_mind02_geno002
   plink --bfile ${bfile}_geno02_mind02_geno002 \
-  --mind 0.02 \
+  --mind ${mind_sed} \
   --allow-no-sex \
   --make-bed --out ${bfile}_geno02_mind02_geno002_mind002
 }
