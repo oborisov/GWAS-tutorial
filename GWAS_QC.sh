@@ -5,10 +5,11 @@
 # hwe - deviations from Hardy–Weinberg equilibrium (HWE)
 # user can set maf, geno, mind by passing 2nd 3rd and 4th argument to maf_geno_mind_hwe
 maf_geno_mind_hwe () {
-  bfile=$1
+  bfile=$1; maf_set=$2; geno_set=$3; mind_set=$4
   maf_set="${maf_set:-0.01}"
   geno_set="${geno_set:-0.02}"
-  mind_sed="${mind_sed:-0.02}"
+  mind_set="${mind_set:-0.02}"
+  echo $bfile $maf_set $geno_set $mind_set
   plink --bfile ${bfile} \
   --maf ${maf_set} \
   --geno 0.2 \
@@ -25,7 +26,7 @@ maf_geno_mind_hwe () {
   --allow-no-sex \
   --make-bed --out ${bfile}_geno02_mind02_geno002
   plink --bfile ${bfile}_geno02_mind02_geno002 \
-  --mind ${mind_sed} \
+  --mind ${mind_set} \
   --allow-no-sex \
   --make-bed --out ${bfile}_geno02_mind02_geno002_mind002
 }
