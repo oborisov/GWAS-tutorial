@@ -5,5 +5,3 @@ exclude_ambigous_AT_GC () {
   --allow-no-sex \
   --make-bed --out ${bfile}_noambig
 }
-# heterozygosity rate - to be added
-
