@@ -9,7 +9,7 @@ split_chr
 done
 
 
-# Processing autosomes
+## Processing autosomes
 # coverting alleles to plus strand using +fixref bcftools
 # sorting files by coordinates
 # removing duplicated variants (bcftools)
@@ -26,8 +26,10 @@ bcftools_fixref_sort_rm_dup () {
 }
 
 bcftools_fixref_sort_rm_dup \
-  /home/borisov/ACE/ACE_HNR_full_QC_noGSA_rs78130450 \
+  bfile \
   /home/borisov/.conda/envs/borisov_env/bcftools-1.9/plugins/ \
   /home/borisov/software/human_g1k_v37.fasta \
   /home/borisov/software/common_all_20180423.vcf.gz
+
+## Processing X chromosome (if present)
 
