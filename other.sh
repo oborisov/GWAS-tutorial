@@ -25,3 +25,11 @@
   ' > ${bfile}.assoc.logistic.R
   Rscript ${bfile}.assoc.logistic.R ${bfile}.assoc.logistic_pc
 }
+
+
+
+bcftools +fixref ${bfile}_chr${chr}.vcf -Ov -o ${bfile}_flipped_chr${chr}.vcf -- -f ${reference_fasta} -m flip -d
+    bcftools +fixref ${bfile}_flipped_chr${chr}.vcf -Ov -o ${bfile}_ref_unsorted_chr${chr}.vcf -- -d -f ${reference_fasta} -i ${common_variants}
+    bcftools sort ${bfile}_ref_unsorted_chr${chr}.vcf -Ov -o ${bfile}_ref_dup_chr${chr}.vcf
+    bcftools norm ${bfile}_ref_dup_chr${chr}.vcf --rm-dup all -o ${bfile}_ref_chr${chr}.vcf
+ 
