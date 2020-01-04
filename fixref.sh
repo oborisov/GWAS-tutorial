@@ -1,8 +1,11 @@
 
-# Dividing data into single chromosomes and converting to vcf
-
-for i in {1..26}; do
+# Split data into single chromosomes and converting to vcf
+split_chr () {
+  bfile=$1
   plink --bfile ${study_dir}/${bfile} --chr ${i} --recode vcf --out ${study_dir}/${bfile}_chr${i}
+}
+for i in {1..26}; do
+split_chr
 done
 
 # Processing autosomes
