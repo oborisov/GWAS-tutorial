@@ -15,7 +15,7 @@ reference_fasta=$3
 common_variants=$4
 chr=$5
 export BCFTOOLS_PLUGINS=$2
-echo "processing chromosome ${chr}"
+echo "fixref chromosome ${chr}"
 plink --bfile ${bfile} --chr ${chr} --recode vcf --out ${bfile}_chr${chr}
 bcftools +fixref ${bfile}_chr${chr}.vcf -- -f ${reference_fasta} -m flip -d | bcftools sort | bcftools norm --rm-dup all -o ${bfile}_ref_chr${chr}.vcf
 ' > ~/fixref.sh
