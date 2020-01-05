@@ -26,6 +26,7 @@
   Rscript ${bfile}.assoc.logistic.R ${bfile}.assoc.logistic_pc
 }
 
+# | bcftools +fixref -- -d -f ${reference_fasta} -i ${common_variants}
 
 
 bcftools +fixref ${bfile}_chr${chr}.vcf -Ov -o ${bfile}_flipped_chr${chr}.vcf -- -f ${reference_fasta} -m flip -d
