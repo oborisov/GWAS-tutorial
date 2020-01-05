@@ -26,7 +26,10 @@
   Rscript ${bfile}.assoc.logistic.R ${bfile}.assoc.logistic_pc
 }
 
-# | bcftools +fixref -- -d -f ${reference_fasta} -i ${common_variants}
+# bcftools to use dbsnp ids
+# | bcftools +fixref -- -d -f ${reference_fasta} -i ${common_variants} 
+#     /home/borisov/software/common_all_20180423.vcf.gz \
+
 
 
 bcftools +fixref ${bfile}_chr${chr}.vcf -Ov -o ${bfile}_flipped_chr${chr}.vcf -- -f ${reference_fasta} -m flip -d
