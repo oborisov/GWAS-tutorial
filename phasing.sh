@@ -1,53 +1,73 @@
-# shapeit in "-check" mode to double check problematic variants (duplicates, strand missmatches)
-shapeit_check () {
-  shapeit -check \
-  --input-vcf $dir/${bfile}_ref_chr${i}.vcf \
-  -M $dir1000genomes/genetic_map_chr${i}_combined_b37.txt \
-  --output-log $dir/${bfile}_ref_chr${i}.alignment \
-  -R $dir1000genomes/1000GP_Phase3_chr${i}.hap.gz \
-  $dir1000genomes/1000GP_Phase3_chr${i}.legend.gz \
-  $dir1000genomes/1000GP_Phase3.sample \
-  --include-grp $dir/group.list" >> $dir/jobs.list
-}
+# 1. shapeit in "-check" mode to double check problematic variants (duplicates, strand missmatches)
+# 2. shapeit in phasing mode
 
+%%bash
+## Assign path to bfile and 1kg superpopulation
+bfile=
+my_superpopulation=EUR # EUR, AMR, SAS, EAS, AFR
+## Reassign default variables if run in other account / on other machine
+dir1000genomes=/home/borisov/software/1000GP_Phase3/
+n_threads=16
+echo ${my_superpopulation} > ${bfile}_group.list
+# the following run automatically
+echo '#!/bin/bash
+bfile=$1
+dir1000genomes=$2
+chr=$3
+n_threads=$4
 
-sleep 1
+echo "phasing chromosome ${chr} (shapeit check)"
 
-for i in {1..22}; do
-done
-wait_fun
-
-# shapeit phasing (-O or --output-max) --ntasks 1 --ntasks-per-node 1
-for i in {1..22}; do
-if [ -f $dir/${bfile}_ref_chr${i}.alignment.snp.strand.exclude ]
-then
-sbatch --parsable --chdir $dir --partition=medium --time=23:59:59 --cpus-per-task 16 --mem=16G --wrap="
 shapeit \
---thread 24 \
---input-vcf $dir/${bfile}_ref_chr${i}.vcf \
--M $dir1000genomes/genetic_map_chr${i}_combined_b37.txt \
--O $dir/${bfile}_ref_chr${i}.phased \
--R $dir1000genomes/1000GP_Phase3_chr${i}.hap.gz \
-$dir1000genomes/1000GP_Phase3_chr${i}.legend.gz \
-$dir1000genomes/1000GP_Phase3.sample \
---include-grp $dir/group.list \
---exclude-snp $dir/${bfile}_ref_chr${i}.alignment.snp.strand.exclude
-" >> $dir/jobs.list
+-check \
+--input-vcf ${bfile}_ref_chr${chr}.vcf \
+-M ${dir1000genomes}/genetic_map_chr${chr}_combined_b37.txt \
+--output-log ${bfile}_ref_chr${chr}.alignment \
+-R ${dir1000genomes}/1000GP_Phase3_chr${chr}.hap.gz \
+${dir1000genomes}/1000GP_Phase3_chr${chr}.legend.gz \
+${dir1000genomes}/1000GP_Phase3.sample \
+--include-grp ${bfile}_group.list
+
+echo "phasing chromosome ${chr} (shapeit phase)"
+
+if [ -f ${bfile}_ref_chr${chr}.alignment.snp.strand.exclude ]; then
+shapeit \
+--thread ${n_threads} \
+--input-vcf ${bfile}_ref_chr${chr}.vcf \
+-M ${dir1000genomes}/genetic_map_chr${chr}_combined_b37.txt \
+-O ${bfile}_ref_chr${chr}.phased \
+-R ${dir1000genomes}/1000GP_Phase3_chr${chr}.hap.gz \
+${dir1000genomes}/1000GP_Phase3_chr${chr}.legend.gz \
+${dir1000genomes}/1000GP_Phase3.sample \
+--include-grp ${bfile}_group.list \
+--exclude-snp ${bfile}_ref_chr${chr}.alignment.snp.strand.exclude
+
 else
-sbatch --parsable --chdir $dir --partition=medium --time=23:59:59 --cpus-per-task 16 --mem=16G --wrap="
-shapeit \
---thread 24 \
---input-vcf $dir/${bfile}_ref_chr${i}.vcf \
--M $dir1000genomes/genetic_map_chr${i}_combined_b37.txt \
--O $dir/${bfile}_ref_chr${i}.phased \
--R $dir1000genomes/1000GP_Phase3_chr${i}.hap.gz \
-$dir1000genomes/1000GP_Phase3_chr${i}.legend.gz \
-$dir1000genomes/1000GP_Phase3.sample \
---include-grp $dir/group.list
-" >> $dir/jobs.list
-fi
-sleep 0.2
-done
-wait_fun
 
-rm $dir/jobs.list
+shapeit \
+--thread ${n_threads} \
+--input-vcf ${bfile}_ref_chr${chr}.vcf \
+-M ${dir1000genomes}/genetic_map_chr${chr}_combined_b37.txt \
+-O ${bfile}_ref_chr${chr}.phased \
+-R ${dir1000genomes}/1000GP_Phase3_chr${chr}.hap.gz \
+${dir1000genomes}/1000GP_Phase3_chr${chr}.legend.gz \
+${dir1000genomes}/1000GP_Phase3.sample \
+--include-grp ${bfile}_group.list
+fi
+
+' > ${bfile}_phasing.sh
+
+for chr in {1..22}; do
+sbatch --parsable --partition=medium --time=24:00:00 --cpus-per-task n_threads --mem=16G \
+    ${bfile}_phasing.sh \
+    ${bfile} \
+    ${dir1000genomes} \
+    ${chr} \
+    ${n_threads} >> ${bfile}_jobs.list
+    sleep 1
+done
+
+squeue | grep -wFf ${bfile}_jobs.list > /dev/null
+while [ $? -ne 1 ]; do sleep 5; squeue | grep -wFf ${bfile}_jobs.list > /dev/null; done
+echo "phasing done"
+
