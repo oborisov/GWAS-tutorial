@@ -58,7 +58,7 @@ fi
 ' > ${bfile}_phasing.sh
 
 for chr in {1..22}; do
-sbatch --parsable --partition=medium --time=24:00:00 --cpus-per-task n_threads --mem=16G \
+sbatch --parsable --partition=medium --time=24:00:00 --cpus-per-task ${n_threads} --mem=16G \
     ${bfile}_phasing.sh \
     ${bfile} \
     ${dir1000genomes} \
