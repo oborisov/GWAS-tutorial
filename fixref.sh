@@ -1,3 +1,5 @@
+## Check that FIDs or IIDs do not have underscores "_"
+
 ## Processing autosomes
 # Split data into single chromosomes and converting to vcf
 # coverting alleles to plus strand using +fixref bcftools
