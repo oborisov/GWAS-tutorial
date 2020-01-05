@@ -4,6 +4,7 @@
 # sorting files by coordinates
 # removing duplicated variants (bcftools)
 
+%%bash
 ## Assign path to bfile
 bfile=
 # the following run automatically
