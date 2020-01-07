@@ -2,12 +2,12 @@
 ## Assign path to bfile and 1kg superpopulation
 bfile=
 my_superpopulation=EUR # EUR, AMR, SAS, EAS, AFR
-chunk_size=5000000
 ## Reassign default variables if run in other account / on other machine
 dir1000genomes=/home/borisov/software/1000GP_Phase3/
+chunk_size=5000000
 n_threads=16
-echo ${my_superpopulation} > ${bfile}_group.list
 # the following run automatically
+echo ${my_superpopulation} > ${bfile}_group.list
 echo '#!/bin/bash
   bfile=$1
   dir1000genomes=$2
