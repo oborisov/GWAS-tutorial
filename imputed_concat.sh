@@ -1,9 +1,9 @@
 %%bash
 ## Assign path to bfile
-bfile=/home/borisov/ACE/ACE_HNR_full_QC_noGSA_rs78130450
-chunk_size=5000000
+bfile=
 ## Reassign default variables if run in other account / on other machine
 dir1000genomes=/home/borisov/software/1000GP_Phase3/
+chunk_size=5000000
 imputed_concat () {
     bfile=$1
     chr=$2
