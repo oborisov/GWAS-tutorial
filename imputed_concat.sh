@@ -25,7 +25,7 @@ imputed_concat () {
         tail -n +2 ${bfile}_ref_chr${chr}.phased.impute2.${upper}_info >> \
         ${bfile}_ref_chr${chr}.phased.impute2_info
         # remove temporary chunks files
-#        rm ${bfile}_ref_chr${chr}.phased.impute2.${upper}*
+        rm ${bfile}_ref_chr${chr}.phased.impute2.${upper}*
     done
     # compress .gen to .gen.gz
     echo "gzipping ${bfile}_ref_chr${chr}.phased.impute2"
