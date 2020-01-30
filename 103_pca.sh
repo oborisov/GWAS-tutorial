@@ -1,6 +1,6 @@
 # performing pca with plink2
-# visualizing 2 first principal components
-
+%%bash
+bfile=""
 pruning_pca_fun () {
   bfile=$1
   plink --bfile ${bfile} \
@@ -13,8 +13,10 @@ pruning_pca_fun () {
   --pca \
   --out ${bfile}_eigen
 }
+pruning_pca_fun ${bfile}
+cat ${bfile}_eigen.eigenval
 
-# plot PC
+# visualizing 2 first principal components
 %%R
 eigenvec=fread(".eigenvec")
 eigenvec[, cc_status := "controls"]
@@ -23,13 +25,15 @@ table(eigenvec$cc_status)
 ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status))+
 geom_point()
 
+# identifying strong outliers - calculating number of SD
+%%R
+for (x in 3:4) {
+    ind=x+15
+    mycol=paste0("sd_for_PC", x-2)
+    eigenvec[, (mycol) := round(abs(eigenvec[[x]] - mean(eigenvec[[x]])) / sd(eigenvec[[x]]))]
+}
 
-
-# identifying strong outliers - calculating percentiles of principal component 1 for every sample
-echo '
-library(ggplot2)
-myargs=commandArgs[1]
-eigenvec_file=fread(myargs)
-p=ggplot(eigenvec_file, aes(x=PC1, y=PC2, label=IID))+
-geom_point()
-'
+# if there are pc outliers, copy files with "_pca" suffix
+cp ${bfile}.bed ${bfile}_pca.bed
+cp ${bfile}.bim ${bfile}_pca.bim
+cp ${bfile}.fam ${bfile}_pca.fam
