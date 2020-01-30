@@ -37,3 +37,7 @@ for (x in 3:4) {
 cp ${bfile}.bed ${bfile}_pca.bed
 cp ${bfile}.bim ${bfile}_pca.bim
 cp ${bfile}.fam ${bfile}_pca.fam
+# or remove pc outliers (using _eigen.rm)
+plink --bfile ${bfile} \
+--remove ${bfile}_eigen.rm \
+--make-bed --out ${bfile}_pca
