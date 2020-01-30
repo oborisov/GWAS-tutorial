@@ -14,6 +14,17 @@ pruning_pca_fun () {
   --out ${bfile}_eigen
 }
 
+# plot PC
+%%R
+eigenvec=fread(".eigenvec")
+eigenvec[, cc_status := "controls"]
+eigenvec[grep("lkg",IID, ignore.case=T), cc_status := "cases"]
+table(eigenvec$cc_status)
+ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status))+
+geom_point()
+
+
+
 # identifying strong outliers - calculating percentiles of principal component 1 for every sample
 echo '
 library(ggplot2)
