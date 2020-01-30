@@ -3,7 +3,7 @@
 # 2. shapeit in phasing mode
 
 ## Assign path to bfile and 1kg superpopulation
-bfile="/home/borisov/nsCLP/LKG_2010/LKG_2010_cases_399_controls_1318_geno02_mind02_geno002_mind002_norelated_pca"
+bfile=""
 my_superpopulation=EUR # EUR, AMR, SAS, EAS, AFR
 ## Reassign default variables if run in other account / on other machine
 dir1000genomes=/home/borisov/software/1000GP_Phase3/
