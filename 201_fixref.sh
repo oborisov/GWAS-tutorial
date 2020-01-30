@@ -10,7 +10,7 @@
 
 %%bash
 ## Assign path to bfile
-bfile=
+bfile=""
 ## Reassign default variables if run in other account / on other machine
 bcftools_plugins="/home/borisov/.conda/envs/borisov_env/bcftools-1.9/plugins/"
 reference_fasta="/home/borisov/software/human_g1k_v37.fasta"
@@ -34,4 +34,5 @@ sbatch --parsable --mem=16G --time=05:00:00 --cpus-per-task=8 \
 done
 squeue | grep -wFf ${bfile}_jobs.list > /dev/null
 while [ $? -ne 1 ]; do sleep 5; squeue | grep -wFf ${bfile}_jobs.list > /dev/null; done
-echo "fixref done"
+echo "fixref is done"
+
