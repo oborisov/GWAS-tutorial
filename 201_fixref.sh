@@ -15,6 +15,7 @@ bfile=""
 bcftools_plugins="/home/borisov/.conda/envs/borisov_env/bcftools-1.9/plugins/"
 reference_fasta="/home/borisov/software/human_g1k_v37.fasta"
 # the following run automatically
+rm ${bfile}_jobs.list >/dev/null 2>&1
 echo '#!/bin/bash
 bfile=$1
 reference_fasta=$2
