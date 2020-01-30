@@ -6,6 +6,8 @@
 # sorting files by coordinates
 # removing duplicated variants (bcftools)
 
+### Converting to reference strand using bcftools +fixref
+
 %%bash
 ## Assign path to bfile
 bfile=
