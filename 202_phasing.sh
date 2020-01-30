@@ -1,9 +1,9 @@
+%%bash
 # 1. shapeit in "-check" mode to double check problematic variants (duplicates, strand missmatches)
 # 2. shapeit in phasing mode
 
-%%bash
 ## Assign path to bfile and 1kg superpopulation
-bfile=
+bfile="/home/borisov/nsCLP/LKG_2010/LKG_2010_cases_399_controls_1318_geno02_mind02_geno002_mind002_norelated_pca"
 my_superpopulation=EUR # EUR, AMR, SAS, EAS, AFR
 ## Reassign default variables if run in other account / on other machine
 dir1000genomes=/home/borisov/software/1000GP_Phase3/
@@ -69,5 +69,5 @@ done
 
 squeue | grep -wFf ${bfile}_jobs.list > /dev/null
 while [ $? -ne 1 ]; do sleep 5; squeue | grep -wFf ${bfile}_jobs.list > /dev/null; done
-echo "phasing done"
+echo "phasing is done"
 
