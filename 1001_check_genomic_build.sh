@@ -23,6 +23,7 @@ Hg38toHg19 http://hgdownload.cse.ucsc.edu/goldenPath/hg38/liftOver/hg38ToHg19.ov
 %%bash
 suffix="map" # or bim
 plink_file_prefix=""
+chain_file="/home/borisov/software/hg38ToHg19.over.chain.gz" # /home/borisov/software/hg18ToHg19.over.chain.gz
 # dos2unix "${pedfile_prefix}.${suffix}" # optional, check with vim
 /home/borisov/software/liftOver \
 <(awk 'OFS="\t"{print "chr",$1,$4,$4+1,$2}' \
@@ -30,7 +31,7 @@ plink_file_prefix=""
 sed 's/\t//' | \
 sed 's/chr23/chrX/g' | sed 's/chr24/chrY/g' | \
 sed 's/chr25/chrXY/g' | sed 's/chr26/chrM/g') \
-/home/borisov/software/hg18ToHg19.over.chain.gz \
+${chain_file} \
 "${plink_file_prefix}"_hg19 \
 "${plink_file_prefix}"_unMapped
 if [ ${suffix} == map ]; then plink_input="file"; elif [ ${suffix} == bim ]; then plink_input="bfile"; fi
