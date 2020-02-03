@@ -33,3 +33,5 @@ maf_geno_mind_hwe () {
 }
 maf_geno_mind_hwe ${bfile}
 grep "pass filters and QC" ${bfile}_geno02_mind02_geno002_mind002.log
+echo "REMOVED SAMPLES"
+cat ${bfile}*irem
