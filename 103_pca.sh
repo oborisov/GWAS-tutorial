@@ -20,6 +20,7 @@ eigenvec=fread(paste0(bfile, "_eigen.eigenvec"))
 fam=fread(paste0(bfile, ".fam"), header=F)
 colnames(fam)[6]="cc_status"
 eigenvec=merge(eigenvec, fam[,c(2,6)], by.x="IID", by.y="V2")
+eigenvec[, cc_status := as.factor(cc_status)]
 for (x in 3:4) {
     ind=x+15
     mycol=paste0("sd_for_PC", x-2)
@@ -27,7 +28,7 @@ for (x in 3:4) {
 }
 sd_iids=eigenvec[sd_for_PC1 > n_sd | sd_for_PC2 > n_sd]$IID
 ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status, label = IID))+
-geom_point(color = ifelse(eigenvec$IID %in% sd_iids, "red", "grey50")) +
+geom_point() + # color = ifelse(eigenvec$IID %in% sd_iids, "red", "grey50")
 geom_label_repel(data=eigenvec[IID %in% sd_iids])
 
 
@@ -35,9 +36,6 @@ geom_label_repel(data=eigenvec[IID %in% sd_iids])
 # More than n_sd SD outliers based on PC1 and PC2:
 fwrite(eigenvec[IID %in% sd_iids][,c(2,1)], paste0(bfile, "_eigen.rm"), col.names=F, sep=" ")
 eigenvec[IID %in% sd_iids][,c(1,2,13,14)]
-
-%%R
-fwrite(data.table(), paste0(bfile, "_eigen.rm"), sep="\t", col.names=F)
 
 # if there are no pc outliers, copy files with "_pca" suffix
 %%bash
