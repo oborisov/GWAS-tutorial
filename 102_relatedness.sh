@@ -10,20 +10,21 @@ awk '{print $2,$2,$3,$4,$5,$6}' \
 ${bfile}.famBK > \
 ${bfile}.fam
 
-king_relatedness () {
-  bfile=$1
-  king -b ${bfile}.bed \
-  --related \
-  --degree 2 \
-  --prefix ${bfile} \
-  --cpus 22
-}
-king_relatedness ${bfile}
+%%bash
+bfile=""
+salloc --job-name HNR_pca --mem=16000M --time=5:00:00 --cpus-per-task=20 \
+srun king -b ${bfile}.bed \
+--related \
+--degree 2 \
+--prefix ${bfile} \
+--cpus 20
 
 # if FIDs were changed to IIDs, change back famBK file
 mv ${bfile}.famBK ${bfile}.fam 
 
 ## if there are no relatives, copy files with "_norelated" suffix
+%%bash
+bfile=""
 cp ${bfile}.bed ${bfile}_norelated.bed
 cp ${bfile}.bim ${bfile}_norelated.bim
 cp ${bfile}.fam ${bfile}_norelated.fam
