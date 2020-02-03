@@ -4,6 +4,7 @@
 # SNP missingness (geno): excluding variants with missingness in > 2% of samples
 # Hardy–Weinberg equilibrium (hwe): excluding variants deviating from HWE with P<1e-10 (for cases and controls) and P<1-e6 (for controls only)
 # individual missingness (mind): excluding samples with > 2% of missing variants 
+bfile=""
 maf_geno_mind_hwe () {
   bfile=$1; maf_set=$2; geno_set=$3; mind_set=$4
   maf_set="${maf_set:-0.01}"
@@ -30,6 +31,5 @@ maf_geno_mind_hwe () {
   --allow-no-sex \
   --make-bed --out ${bfile}_geno02_mind02_geno002_mind002
 }
-bfile=""
 maf_geno_mind_hwe ${bfile}
 grep "pass filters and QC" ${bfile}_geno02_mind02_geno002_mind002.log
