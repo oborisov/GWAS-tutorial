@@ -16,22 +16,28 @@ pruning_pca_fun () {
 pruning_pca_fun ${bfile}
 cat ${bfile}_eigen.eigenval
 
-# visualizing 2 first principal components
 %%R
-eigenvec=fread(".eigenvec")
+library(ggrepel)
+# visualizing 2 first principal components
+bfile=""
+eigenvec=fread(paste0(bfile, "_eigen.eigenvec"))
 eigenvec[, cc_status := "controls"]
 eigenvec[grep("lkg",IID, ignore.case=T), cc_status := "cases"]
-table(eigenvec$cc_status)
-ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status))+
-geom_point()
-
-# identifying strong outliers - calculating number of SD
-%%R
 for (x in 3:4) {
     ind=x+15
     mycol=paste0("sd_for_PC", x-2)
     eigenvec[, (mycol) := round(abs(eigenvec[[x]] - mean(eigenvec[[x]])) / sd(eigenvec[[x]]))]
 }
+six_sd_iids=eigenvec[sd_for_PC1 > 6 | sd_for_PC2 > 6]$IID
+ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status, label = IID))+
+geom_point(color = ifelse(eigenvec$IID %in% six_sd_iids, "red", "grey50")) +
+geom_label_repel(data=eigenvec[IID %in% six_sd_iids])
+
+%%R
+# More than 6 SD outliers based on PC1 and PC2:
+eigenvec[IID %in% six_sd_iids]
+
+
 
 # if there are pc outliers, copy files with "_pca" suffix
 cp ${bfile}.bed ${bfile}_pca.bed
