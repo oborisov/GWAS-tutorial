@@ -5,7 +5,7 @@ pruning_pca_fun () {
   bfile=$1
   plink --bfile ${bfile} \
   --indep-pairwise 1000 50 0.2 \
-  --out ${bfile}_pruning >/dev/null 2>&1
+  --out ${bfile}_pruning
   plink --bfile ${bfile} \
   --extract <(cat ${bfile}_pruning.prune.in) \
   --make-bed --out ${bfile}_pruned
@@ -39,7 +39,7 @@ eigenvec[IID %in% six_sd_iids]
 
 
 
-# if there are pc outliers, copy files with "_pca" suffix
+# if there are no pc outliers, copy files with "_pca" suffix
 cp ${bfile}.bed ${bfile}_pca.bed
 cp ${bfile}.bim ${bfile}_pca.bim
 cp ${bfile}.fam ${bfile}_pca.fam
