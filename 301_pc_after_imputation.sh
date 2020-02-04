@@ -27,26 +27,33 @@ rm ${gen}.bed ${gen}.bim ${gen}.fam ${gen}.log
 done; rm ${sample}_concat
 
 bfile="${sample}_concat"
-pruning_pca_fun () {
-  bfile=$1
-  plink --bfile ${bfile} \
-  --indep-pairwise 1000 50 0.2 \
-  --out ${bfile}_pruning >/dev/null 2>&1
-  plink --bfile ${bfile} \
-  --extract <(cat ${bfile}_pruning.prune.in) \
-  --make-bed --out ${bfile}_pruned
-  plink2 --bfile ${bfile}_pruned \
-  --pca \
-  --out ${bfile}_eigen
-}
-pruning_pca_fun ${bfile}
+plink --bfile ${bfile} \
+--indep-pairwise 1000 50 0.2 \
+--out ${bfile}_pruning
+plink --bfile ${bfile} \
+--extract <(cat ${bfile}_pruning.prune.in) \
+--make-bed --out ${bfile}_pruned
+salloc --job-name HNR_pca --mem=16000M --time=5:00:00 --cpus-per-task=20 \
+srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
 cat ${bfile}_eigen.eigenval
 
-# visualizing 2 first principal components
 %%R
-eigenvec=fread(".eigenvec")
-eigenvec[, cc_status := "controls"]
-eigenvec[grep("lkg",IID, ignore.case=T), cc_status := "cases"]
-table(eigenvec$cc_status)
-ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status))+
-geom_point()
+# visualizing 2 first principal components
+library(ggrepel)
+n_sd=6
+bfile=""
+eigenvec=fread(paste0(bfile, "_eigen.eigenvec"))
+fam=fread(paste0(bfile, ".fam"), header=F)
+colnames(fam)[6]="cc_status"
+eigenvec=merge(eigenvec, fam[,c(2,6)], by.x="IID", by.y="V2")
+eigenvec[, cc_status := as.factor(cc_status)]
+for (x in 3:4) {
+    ind=x+15
+    mycol=paste0("sd_for_PC", x-2)
+    eigenvec[, (mycol) := round(abs(eigenvec[[x]] - median(eigenvec[[x]])) / IQR(eigenvec[[x]])+0.5)]
+}
+sd_iids=eigenvec[sd_for_PC1 > n_sd | sd_for_PC2 > n_sd]$IID
+ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status, label = IID))+
+geom_point() + # color = ifelse(eigenvec$IID %in% sd_iids, "red", "grey50")
+geom_label_repel(data=eigenvec[IID %in% sd_iids])
+
