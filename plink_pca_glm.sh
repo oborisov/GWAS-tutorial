@@ -1,3 +1,5 @@
+%%bash
+echo '#!/bin/bash
 plink_regression () {
   bfile=$1
   plink2 --bfile ${bfile} \
@@ -7,11 +9,11 @@ plink_regression () {
   lambda_pc_iterate () {
   bfile=$1; covar_name=$2
   plink2 --bfile ${bfile} \
-  --glm hide-covar cols=p \
+  --glm hide-covar cols=p,chrom,pos \
   --covar ${bfile}.eigenvec \
   --covar-col-nums ${covar_name} \
   --out ${bfile}_PC${covar_name}
-  Rscript -e "median(qchisq(1 - (fread(commandArgs(T))[[3]]), 1))/qchisq(0.5,1)" \
+  Rscript -e "median(qchisq(1 - (fread(commandArgs(T))[[5]]), 1))/qchisq(0.5,1)" \
   ${bfile}_PC${covar_name}.PHENO1.glm.logistic > \
   ${bfile}_PC${covar_name}.PHENO1.glm.logistic_lambda
   }
@@ -25,3 +27,7 @@ plink_regression () {
   cat ${bfile}_PC${covar_name}.PHENO1.glm.logistic_lambda
   done
 }
+plink_regression ${bfile}
+' > ${bfile}_glm.sh
+sbatch --wait --partition=medium --time=24:00:00 --cpus-per-task 16 --mem=16G ${bfile}_glm.sh
+rm ${bfile}_glm.sh
