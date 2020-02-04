@@ -39,6 +39,7 @@ eigenvec[IID %in% sd_iids][,c(1,2,13,14)]
 
 # if there are no pc outliers, copy files with "_pca" suffix
 %%bash
+bfile=""
 cp ${bfile}.bed ${bfile}_pca.bed
 cp ${bfile}.bim ${bfile}_pca.bim
 cp ${bfile}.fam ${bfile}_pca.fam
