@@ -1,5 +1,5 @@
-# performing pca with plink2
 %%bash
+# performing pca with plink2
 bfile=""
 plink --bfile ${bfile} \
 --indep-pairwise 1000 50 0.2 \
