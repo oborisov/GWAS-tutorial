@@ -14,7 +14,7 @@ echo $bfile $maf_set $geno_set $mind_set
 plink --bfile ${bfile} \
 --maf ${maf_set} \
 --geno 0.2 \
-hwe 1e-6 \
+--hwe 1e-6 \
 --allow-no-sex \
 --make-bed --out ${bfile}_geno02
 plink --bfile ${bfile}_geno02 \
