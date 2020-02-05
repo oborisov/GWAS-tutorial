@@ -13,9 +13,9 @@ cat ${bfile}_eigen.eigenval
 
 %%R
 # visualizing 2 first principal components
-library(ggrepel)
-n_sd=6
 bfile=""
+n_sd=6
+library(ggrepel)
 eigenvec=fread(paste0(bfile, "_eigen.eigenvec"))
 fam=fread(paste0(bfile, ".fam"), header=F)
 colnames(fam)[6]="cc_status"
