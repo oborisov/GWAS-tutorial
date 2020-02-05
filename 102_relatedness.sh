@@ -1,8 +1,7 @@
-# from http://people.virginia.edu/~wc9c/KING/manual.html
-# the script looks and filter out 2nd degree relatives
-# make sure that family ids are not identical (e.g., "0" for all samples)
-# if needed, change FIDs to IIDs
 %%bash
+# Checking relatedness using king
+# from http://people.virginia.edu/~wc9c/KING/manual.html
+# make sure that family ids are not identical (e.g., "0" for all samples), if needed, change FIDs to IIDs
 bfile=""
 cp ${bfile}.fam \
 ${bfile}.famBK
