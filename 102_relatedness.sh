@@ -22,15 +22,15 @@ srun king -b ${bfile}.bed \
 # if FIDs were changed to IIDs, change back famBK file
 mv ${bfile}.famBK ${bfile}.fam 
 
-# remove relatives
 %%bash
+# remove relatives
 bfile=""
 plink --bfile ${bfile} \
 --remove <(awk '{print $1,$2}' ${bfile}.kin0 | tail -n +2) \
 --make-bed --out ${bfile}_norelated
 
-## if there are no relatives, copy files with "_norelated" suffix
 %%bash
+## if there are no relatives, copy files with "_norelated" suffix
 bfile=""
 cp ${bfile}.bed ${bfile}_norelated.bed
 cp ${bfile}.bim ${bfile}_norelated.bim
