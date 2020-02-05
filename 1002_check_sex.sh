@@ -1,11 +1,10 @@
 %%bash
 bfile=""
-sex_check () {
-  bfile=$1
-  plink --bfile ${bfile} \
-  --check-sex --out ${bfile}_sexcheck
-}
-sex_check ${bfile}
+plink --bfile ${bfile} --indep-pairwise 1000 50 0.2 --out ${bfile}_pruning
+plink --bfile ${bfile} --extract <(cat ${bfile}_pruning.prune.in) \
+--make-bed --out ${bfile}_pruning
+plink --bfile ${bfile}_pruning --check-sex --out ${bfile}_sexcheck
+rm ${bfile}_pruning*
 
 %%R
 bfile=""
