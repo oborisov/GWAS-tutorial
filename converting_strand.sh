@@ -13,4 +13,4 @@ strand_file="GSAMD-24v1-0_20011747_A1"
 bash /home/borisov/software/update_build.sh \
 ${bfile} \
 /home/borisov/software/${strand_file}-b37.strand \
-${bfile}_forward
+${bfile}_SRC
