@@ -1,4 +1,5 @@
 %%bash
+# imputation with impute2
 ## Assign path to bfile and 1kg superpopulation
 bfile=""
 my_superpopulation=EUR # EUR, AMR, SAS, EAS, AFR
