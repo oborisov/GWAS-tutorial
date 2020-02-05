@@ -7,7 +7,7 @@ plink --bfile ${bfile} \
 plink --bfile ${bfile} \
 --extract <(cat ${bfile}_pruning.prune.in) \
 --make-bed --out ${bfile}_pruned
-salloc --job-name HNR_pca --mem=16000M --time=5:00:00 --cpus-per-task=20 \
+salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
 srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
 cat ${bfile}_eigen.eigenval
 
