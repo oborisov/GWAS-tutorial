@@ -1,14 +1,10 @@
+%%bash
 ## Check that FIDs or IIDs do not have underscores "_"
-
-## Processing autosomes
+# Processing autosomes
 # Split data into single chromosomes and converting to vcf
-# coverting alleles to plus strand using +fixref bcftools
+# coverting alleles to reference strand using +fixref bcftools
 # sorting files by coordinates
 # removing duplicated variants (bcftools)
-
-### Converting to reference strand using bcftools +fixref
-
-%%bash
 ## Assign path to bfile
 bfile=""
 ## Reassign default variables if run in other account / on other machine
