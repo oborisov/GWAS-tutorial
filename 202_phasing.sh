@@ -1,7 +1,7 @@
 %%bash
+# Phasing with shapeit in 2 steps:
 # 1. shapeit in "-check" mode to double check problematic variants (duplicates, strand missmatches)
 # 2. shapeit in phasing mode
-
 ## Assign path to bfile and 1kg superpopulation
 bfile=""
 my_superpopulation=EUR # EUR, AMR, SAS, EAS, AFR
