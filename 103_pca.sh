@@ -35,7 +35,7 @@ geom_label_repel(data=eigenvec[IID %in% sd_iids])
 %%R
 # More than n_sd SD outliers based on PC1 and PC2:
 fwrite(eigenvec[IID %in% sd_iids][,c(2,1)], paste0(bfile, "_eigen.rm"), col.names=F, sep=" ")
-eigenvec[IID %in% sd_iids][,c(1,2,13,14)]
+eigenvec[IID %in% sd_iids][,c(1,2,13,14,15)]
 
 %%bash
 # removing pc outliers (using _eigen.rm)
