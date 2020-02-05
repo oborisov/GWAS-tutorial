@@ -1,7 +1,7 @@
 %%bash
 # checking sex of samples using X-chromosome
 bfile=""
-plink --bfile ${bfile} --indep-pairwise 1000 50 0.2 --out ${bfile}_pruning
+plink --bfile ${bfile} --chr 23 --indep-pairwise 1000 50 0.2 --out ${bfile}_pruning
 plink --bfile ${bfile} --extract <(cat ${bfile}_pruning.prune.in) \
 --make-bed --out ${bfile}_pruning
 plink --bfile ${bfile}_pruning --check-sex --out ${bfile}_sexcheck
