@@ -12,7 +12,7 @@ ${bfile}.fam
 
 %%bash
 bfile=""
-salloc --job-name HNR_pca --mem=16000M --time=5:00:00 --cpus-per-task=20 \
+salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
 srun king -b ${bfile}.bed \
 --related \
 --degree 2 \
@@ -21,6 +21,13 @@ srun king -b ${bfile}.bed \
 
 # if FIDs were changed to IIDs, change back famBK file
 mv ${bfile}.famBK ${bfile}.fam 
+
+# remove relatives
+%%bash
+bfile=""
+plink --bfile ${bfile} \
+--remove <(awk '{print $1,$2}' ${bfile}.kin0 | tail -n +2) \
+--make-bed --out ${bfile}_norelated
 
 ## if there are no relatives, copy files with "_norelated" suffix
 %%bash
