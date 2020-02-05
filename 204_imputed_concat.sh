@@ -1,4 +1,5 @@
 %%bash
+# Concatenating all chunks of 5MB into whole chromosomes
 ## Assign path to bfile
 bfile=
 ## Reassign default variables if run in other account / on other machine
