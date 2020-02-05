@@ -2,13 +2,6 @@
 # Checking relatedness using king
 # from http://people.virginia.edu/~wc9c/KING/manual.html
 # make sure that family ids are not identical (e.g., "0" for all samples), if needed, change FIDs to IIDs
-bfile=""
-cp ${bfile}.fam \
-${bfile}.famBK
-awk '{print $2,$2,$3,$4,$5,$6}' \
-${bfile}.famBK > \
-${bfile}.fam
-
 %%bash
 bfile=""
 salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
@@ -19,6 +12,7 @@ srun king -b ${bfile}.bed \
 --cpus 20
 
 # if FIDs were changed to IIDs, change back famBK file
+%%bash; bfile=""; cp ${bfile}.fam ${bfile}.famBK; awk '{print $2,$2,$3,$4,$5,$6}' ${bfile}.famBK > ${bfile}.fam
 mv ${bfile}.famBK ${bfile}.fam 
 
 %%bash
