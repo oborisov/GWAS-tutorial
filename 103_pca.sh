@@ -9,6 +9,7 @@ plink --bfile ${bfile} \
 --make-bed --out ${bfile}_pruned
 salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
 srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
+rm ${bfile}_pruned*
 cat ${bfile}_eigen.eigenval
 
 %%R
