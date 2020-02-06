@@ -1,5 +1,6 @@
 %%bash
-## Standard QC for genotyping data: maf, missingness, hwe
+## Standard QC for genotyping data: maf, missingness of samples and variants, hwe
+## Make sure that sex is present, otherwise HWE will remove the majority of X-chromosome variants
 # Source: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6001694/
 # user can set maf, geno, mind by passing 2nd 3rd and 4th argument to maf_geno_mind_hwe
 # minor allele frequency (maf): excluding variants with maf < 0.01
