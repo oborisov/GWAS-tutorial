@@ -5,6 +5,7 @@ sample="_geno02_mind02_geno002_mind002_norelated_pca_ref_chr1.phased.sample"
 gen_prefix='_geno02_mind02_geno002_mind002_norelated_pca_ref_chr${chr}.phased.impute2'
 
 # the following run automatically
+sample_out=$(echo ${sample} | sed 's/_chr1//')
 rm ${sample}_concat 2> /dev/null
 for chr in {1..22}; do
 eval gen=${gen_prefix}
@@ -18,7 +19,8 @@ done
 wait
 
 # merging all chromosomes into a single file
-plink --merge-list ${sample}_concat \
+salloc --mem=32000M --time=5:00:00 \
+srun plink --merge-list ${sample}_concat \
 --out ${sample}_concat
 
 # cleaning from temp plink per-chromosome files
@@ -29,12 +31,13 @@ done; rm ${sample}_concat
 bfile="${sample}_concat"
 plink --bfile ${bfile} \
 --indep-pairwise 1000 50 0.2 \
---out ${bfile}_pruning
+--out ${bfile}_pruned
 plink --bfile ${bfile} \
---extract <(cat ${bfile}_pruning.prune.in) \
+--extract <(cat ${bfile}_pruned.prune.in) \
 --make-bed --out ${bfile}_pruned
-salloc --job-name HNR_pca --mem=16000M --time=5:00:00 --cpus-per-task=20 \
+salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
 srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
+rm ${bfile}_pruned*
 cat ${bfile}_eigen.eigenval
 
 %%R
