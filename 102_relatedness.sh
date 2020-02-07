@@ -11,9 +11,14 @@ srun king -b ${bfile}.bed \
 --prefix ${bfile} \
 --cpus 20
 
-# if FIDs were changed to IIDs, change back famBK file
-%%bash; bfile=""; cp ${bfile}.fam ${bfile}.famBK; awk '{print $2,$2,$3,$4,$5,$6}' ${bfile}.famBK > ${bfile}.fam
-mv ${bfile}.famBK ${bfile}.fam 
+# script to update fids
+%%bash
+bfile="/home/borisov/LUTO/Dutch/dcg_checkedsex_geno02_mind02_geno002_mind002"
+awk '{print $1,$2,$2,$2}' ${bfile}.fam > ${bfile}_update_ids_temp
+plink --bfile ${bfile} \
+--update-ids ${bfile}_update_ids_temp \
+--make-bed --out ${bfile}_updids
+rm ${bfile}_update_ids_temp
 
 %%bash
 # remove relatives
