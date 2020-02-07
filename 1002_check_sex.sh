@@ -15,8 +15,10 @@ bfile[STATUS != "OK"]
 
 %%bash
 # Updating sex using SNPSEX (determined by X-chromosome)
+# Removing SNPSEX=0
 bfile=""
 plink --bfile ${bfile} \
 --update-sex <(awk '{if ($5 == "PROBLEM") print $1,$2,$4}' ${bfile}_sexcheck.sexcheck) \
+--remove <(awk '{if ($4 == 0) print $1,$2}' ${bfile}_sexcheck.sexcheck) \
 --make-bed --out ${bfile}_checkedsex
 
