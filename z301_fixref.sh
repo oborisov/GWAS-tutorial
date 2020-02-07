@@ -7,7 +7,7 @@
 # sorting files by coordinates
 # removing duplicated variants (bcftools)
 ## Assign path to bfile
-bfile="/home/borisov/LUTO/Dutch/dcg_checkedsex_geno02_mind02_geno002_mind002_norelated_pca_pca_pca_pca"
+bfile=""
 ## Reassign default variables if run in other account / on other machine
 bcftools_plugins="/home/borisov/.conda/envs/borisov_env/bcftools-1.9/plugins"
 reference_fasta="/home/borisov/software/human_g1k_v37.fasta"
