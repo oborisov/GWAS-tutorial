@@ -3,9 +3,9 @@
 bfile=""
 plink --bfile ${bfile} \
 --indep-pairwise 1000 50 0.2 \
---out ${bfile}_pruning
+--out ${bfile}_pruned
 plink --bfile ${bfile} \
---extract <(cat ${bfile}_pruning.prune.in) \
+--extract <(cat ${bfile}_pruned.prune.in) \
 --make-bed --out ${bfile}_pruned
 salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
 srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
