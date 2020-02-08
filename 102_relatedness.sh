@@ -11,8 +11,8 @@ srun king -b ${bfile}.bed \
 --prefix ${bfile} \
 --cpus 20
 
-# script to update fids
 %%bash
+# script to update fids
 bfile=""
 awk '{print $1,$2,$2,$2}' ${bfile}.fam > ${bfile}_update_ids_temp
 plink --bfile ${bfile} \
@@ -33,3 +33,11 @@ bfile=""
 cp ${bfile}.bed ${bfile}_norelated.bed
 cp ${bfile}.bim ${bfile}_norelated.bim
 cp ${bfile}.fam ${bfile}_norelated.fam
+
+
+%%bash
+## if there are no relatives and ids were updated
+bfile=""
+mv ${bfile}_updids.bed ${bfile}_norelated.bed
+mv ${bfile}_updids.bim ${bfile}_norelated.bim
+mv ${bfile}_updids.fam ${bfile}_norelated.fam
