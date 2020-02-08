@@ -31,6 +31,7 @@ imputed_concat () {
         ${bfile}_ref_chr${chr}.phased.impute2.${upper}_info
         mv ${bfile}_ref_chr${chr}.phased.impute2.${upper}_summary \
         ${bfile}_ref_chr${chr}.phased.impute2.${upper}_info_by_sample \
+        ${bfile}_ref_chr${chr}.phased.impute2.${upper}_warnings \
         ${bfile}_imputation_quality        
     done
     # compress .gen to .gen.gz
