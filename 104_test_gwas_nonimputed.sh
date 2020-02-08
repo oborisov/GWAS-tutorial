@@ -11,10 +11,11 @@ plink --bfile ${bfile} \
 
 %%R
 bfile=""
-suffix="_test_nopc"
-pvec=fread(paste0(bfile, suffix, ".assoc.logistic"))
-median(qchisq(1 - pvec[[9]], 1), na.rm=T) / qchisq(0.5, 1)
-
+pvec_nopc=fread(paste0(bfile, "_test_nopc", ".assoc.logistic"))
+pvec_4pc=fread(paste0(bfile, "_test_4pc", ".assoc.logistic"))
+pvec_4pc=pvec_4pc[TEST=="ADD"]
+data.table(lambda_nopc=median(qchisq(1 - pvec_nopc[[9]], 1), na.rm=T) / qchisq(0.5, 1),
+          lambda_4pc=median(qchisq(1 - pvec_4pc[[9]], 1), na.rm=T) / qchisq(0.5, 1))
 %%R
 pvec_nopc[order(P)][1:5]
 %%R
