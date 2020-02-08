@@ -35,4 +35,5 @@ squeue | grep -wFf ${bfile}_jobs.list > /dev/null
 while [ $? -ne 1 ]; do sleep 5; squeue | grep -wFf ${bfile}_jobs.list > /dev/null; done
 # removing input vcfs (temrorary files)
 for chr in {1..22}; do rm ${bfile}_chr${chr}.vcf ${bfile}_chr${chr}.log; done
+rm ${bfile}_fixref.sh
 echo "fixref is done"
