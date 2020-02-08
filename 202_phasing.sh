@@ -69,5 +69,9 @@ done
 
 squeue | grep -wFf ${bfile}_jobs.list > /dev/null
 while [ $? -ne 1 ]; do sleep 5; squeue | grep -wFf ${bfile}_jobs.list > /dev/null; done
+
+# removing input vcfs (temporary files)
+for chr in {1..22}; do rm ${bfile}_ref_chr${chr}.vcf; done
+
 echo "phasing is done"
 
