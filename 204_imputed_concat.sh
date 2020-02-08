@@ -1,10 +1,11 @@
 %%bash
 # Concatenating all chunks of 5MB into whole chromosomes
 ## Assign path to bfile
-bfile=
+bfile=""
 ## Reassign default variables if run in other account / on other machine
 dir1000genomes=/home/borisov/software/1000GP_Phase3/
 chunk_size=5000000
+mkdir ${bfile}_imputation_quality
 imputed_concat () {
     bfile=$1
     chr=$2
@@ -28,6 +29,9 @@ imputed_concat () {
         # remove temporary chunks files
         rm ${bfile}_ref_chr${chr}.phased.impute2.${upper} \
         ${bfile}_ref_chr${chr}.phased.impute2.${upper}_info
+        mv ${bfile}_ref_chr${chr}.phased.impute2.${upper}_summary \
+        ${bfile}_ref_chr${chr}.phased.impute2.${upper}_info_by_sample \
+        ${bfile}_imputation_quality        
     done
     # compress .gen to .gen.gz
     echo "gzipping ${bfile}_ref_chr${chr}.phased.impute2"
