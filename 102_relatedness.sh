@@ -13,7 +13,7 @@ srun king -b ${bfile}.bed \
 
 # script to update fids
 %%bash
-bfile="/home/borisov/LUTO/Dutch/dcg_checkedsex_geno02_mind02_geno002_mind002"
+bfile=""
 awk '{print $1,$2,$2,$2}' ${bfile}.fam > ${bfile}_update_ids_temp
 plink --bfile ${bfile} \
 --update-ids ${bfile}_update_ids_temp \
