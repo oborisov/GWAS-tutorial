@@ -1,5 +1,5 @@
 %%bash
-bfile="/home/borisov/LUTO/Dutch/dcg_checkedsex_geno02_mind02_geno002_mind002_norelated_pca_pca_pca_pca_pca"
+bfile=""
 plink --bfile ${bfile} \
 --logistic \
 --out ${bfile}_test_nopc
@@ -10,7 +10,7 @@ plink --bfile ${bfile} \
 --out ${bfile}_test_4PC
 
 %%R
-bfile="/home/borisov/LUTO/Dutch/ioe24_hoe24_NBS_updatedsexpheno_onlywithpheno_SNPSEX_checkedsex_geno02_mind02_geno002_mind002_norelated_pca_pca_pca_pca_pca"
+bfile=""
 suffix="_test_nopc"
 pvec=fread(paste0(bfile, suffix, ".assoc.logistic"))
 median(qchisq(1 - pvec[[9]], 1), na.rm=T) / qchisq(0.5, 1)
