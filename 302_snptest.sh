@@ -29,12 +29,11 @@ cat <(head -1 ${bfile}_ref.phased.sample) \
 <(echo "0 0 0 D B C C C C C C C C C C") \
 <(tail -n +2 ${bfile}_ref.phased.sample) > \
 ${bfile}_ref.phased.sample2
-mv ${bfile}_ref.phased.sample2 ${bfile}_ref.phased.sample
 gen_prefix=${bfile}'_ref_chr${chr}.phased.impute2'
 for chr in {1..22}; do
     eval gen=${gen_prefix}
     salloc --job-name ${job_name} --mem=1000M --partition=long --time=72:00:00 --cpus-per-task=1 > ${gen}.out_slurm 2>&1 srun snptest \
-    -data ${gen}.gz ${bfile}_ref.phased.sample \
+    -data ${gen}.gz ${bfile}_ref.phased.sample2 \
     -pheno case_control \
     -frequentist 1 \
     -method expected \
@@ -44,6 +43,7 @@ for chr in {1..22}; do
     -assume_chromosome $chr \
     -o ${gen}_imputedPC.out.gz &
 done
+
 
 #sstatus=$(sacct --format="JobName%30, State" | grep snptest_LKG_2010 | awk '{print $2}' | sort | uniq -c | awk '{print $2}')
 #if [ ${sstatus} == "RUNNING" ]; then echo eq; f
