@@ -1,5 +1,5 @@
-# Merging chromosomes
 %%bash
+# Merging chromosomes
 fam="_checkedsex_geno02_mind02_geno002_mind002_norelated_pca.fam"
 sample="_geno02_mind02_geno002_mind002_norelated_pca_ref_chr1.phased.sample"
 gen_prefix='_geno02_mind02_geno002_mind002_norelated_pca_ref_chr${chr}.phased.impute2'
