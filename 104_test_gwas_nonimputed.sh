@@ -7,7 +7,7 @@ plink --bfile ${bfile} \
 --covar ${bfile}_eigen.eigenvec \
 --covar-name PC1, PC2, PC3, PC4 \
 --logistic \
---out ${bfile}_test_4PC
+--out ${bfile}_test_4pc
 
 %%R
 bfile=""
