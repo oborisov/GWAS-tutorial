@@ -28,13 +28,12 @@ snptest_out_dt=snptest_out_dt[!is.na(snptest_out_dt$P) & P > 0]
 lambda <- median(qchisq(1 - snptest_out_dt$P, 1)) / qchisq(0.5, 1)
 
 # producing Manhattan plot
-
 jpeg(paste0(bfile, "_manh.jpeg"),
      width = 12, height = 6, units = "in", res = 600)
-print(manhattan(snptest_out_dt, chr="CHR", bp="BP", p="P", snp="SNP",
+print(manhattan(rbind(snptest_out_dt[P<5e-2], snptest_out_dt[P>5e-2][seq(1,nrow(snptest_out_dt[P>5e-2]),10)]), chr="CHR", bp="BP", p="P", snp="SNP",
                 annotatePval = 1, annotateTop = T,
                 col=brewer.pal(8, "Dark2")))
-title(main = plot_prefix)
+title(main = gsub(".*/(.*)_checkedsex.*","\\1",bfile))
 dev.off()
 
 # producing Q-Q plot
@@ -45,6 +44,8 @@ title(main = gsub(".*/(.*)_checkedsex.*","\\1",bfile),
       sub = paste0("Lambda=", round(lambda,4)))
 dev.off()
 
+# writing suggestive associations into a file
+fwrite(snptest_out_dt[P < 1e-5], paste0(bfile, "_suggestive.tsv"), sep="\t", na=NA, quote=F)
 
 # ploting Manhattan and Q-Q plot to stdout
 print(manhattan(snptest_out_dt, chr="CHR", bp="BP", p="P", snp="SNP",
