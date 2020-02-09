@@ -1,18 +1,13 @@
 %%R
 # set up 4 variables
 path_to_wd="/home/borisov/"
-pattern_of_snptest="_geno02_mind02_geno002_mind002_norelated_pca_ref_chr.*.phased.impute2_imputedPC.out$"
+pattern_of_snptest=".out.gz$"
 info_threshold=0.8
 maf_threshold=0.01
 
 ## the rest should run automatically
 
-# xcat default is bitmapType
-# getOption("bitmapType")
-# [1] "Xlib"
-# but it requires X11 which is not present
-# to overcome, use cairo graphics (https://github.com/easybuilders/easybuild-easyconfigs/issues/4918)
-options(bitmapType="cairo")
+# xcat default is bitmapType; # getOption("bitmapType"); # [1] "Xlib"; # but it requires X11 which is not present; # to overcome, use cairo graphics (https://github.com/easybuilders/easybuild-easyconfigs/issues/4918); options(bitmapType="cairo")
 
 # libraries
 lapply(c("qqman", "QCEWAS", "RColorBrewer"), require, character.only = TRUE)
@@ -20,7 +15,7 @@ lapply(c("qqman", "QCEWAS", "RColorBrewer"), require, character.only = TRUE)
 # reading snptest output into dt
 snptest_out_list_files=list.files(path=path_to_wd, pattern=pattern_of_snptest, full.names=T)
 snptest_out_dt=rbindlist(sapply(snptest_out_list_files, function(x) {
-    fread(cmd=paste0("grep -v \\# ", x))[,c("rsid", "chromosome", "position", "info", "cases_maf", "controls_maf", "frequentist_add_pvalue")]
+    fread(cmd=paste0("zcat ", x, " | grep -v \\#"))[,c("rsid", "chromosome", "position", "info", "cases_maf", "controls_maf", "frequentist_add_pvalue")]
 }, simplify=F))
 colnames(snptest_out_dt)=c("SNP", "CHR", "BP", "info", "cases_maf", "controls_maf", "P")
 
