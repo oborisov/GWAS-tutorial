@@ -25,6 +25,8 @@ bfile=""
 plink --bfile ${bfile} \
 --remove <(awk '{print $1,$2}' ${bfile}.kin0 | tail -n +2) \
 --make-bed --out ${bfile}_norelated
+echo "Removed sample(s):"
+awk '{print $1,$2}' ${bfile}.kin0 | tail -n +2
 
 %%bash
 ## if there are no relatives, copy files with "_norelated" suffix
