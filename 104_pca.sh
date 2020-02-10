@@ -52,3 +52,36 @@ bfile=""
 cp ${bfile}.bed ${bfile}_pca.bed
 cp ${bfile}.bim ${bfile}_pca.bim
 cp ${bfile}.fam ${bfile}_pca.fam
+
+%%bash
+### anchoring
+bfile="/home/borisov/nsCLP/LKG_2018_Sharknado/LKG_2018_Sharknado_updids_updsex_checkedsex_geno02_mind02_geno002_mind002_norelated"
+
+# pruning
+plink --bfile ${bfile} \
+--indep-pairwise 1000 50 0.2 \
+--out ${bfile}_pruned
+plink --bfile ${bfile} \
+--extract <(cat ${bfile}_pruned.prune.in) \
+--make-bed --out ${bfile}_pruned
+
+# extracting pruned SNPs from 1000 Genomes
+echo ${bfile}_pruned > ${bfile}_1kg_temp
+for chr in {1..22}; do
+plink --bfile /home/borisov/software/1000GP_Phase3/vcf/chr${chr} \
+--extract <(awk '{print $2}' ${bfile}_pruned.bim) \
+--make-bed --out ${bfile}_1kg_temp_chr${chr}
+echo ${bfile}_1kg_temp_chr${chr} >> ${bfile}_1kg_temp
+done
+
+# merging 1000 genomes and data
+plink --merge-list ${bfile}_1kg_temp --out ${bfile}_1kg_temp
+plink --bfile ${bfile}_1kg_temp --geno 0 --make-bed --out ${bfile}_1kg_temp_geno0
+
+# extracting PC from the merged data
+salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
+srun plink2 --bfile ${bfile}_1kg_temp_geno0 --pca --out ${bfile}_1kg_temp_geno0_eigen
+
+# removing temp files
+rm ${bfile}_1kg_temp
+
