@@ -14,10 +14,10 @@ plink2 --gen ${gen}.gz --sample ${bfile}_ref_chr1.phased.sample \
 --update-sex <(paste -d ' ' <(awk '{print $1,$2}' $fam | tr " " "_" | awk '{print $1,$1}') <(awk '{print $5}' $fam)) \
 --pheno <(paste -d ' ' <(awk '{print $1,$2}' $fam | tr " " "_" | awk '{print $1,$1}') <(awk '{print $6}' $fam)) \
 --extract <(zcat ${gen}_info.gz | awk '{if ($7 > 0.8) print $2}') \
---make-bed --out ${gen} > /dev/null 2>&1 &
+--make-bed --out ${gen} > /dev/null 2>&1
 echo ${gen} >> ${sample}_concat
 done
-wait
+
 
 salloc --mem=32000M --time=5:00:00 --cpus-per-task=1 \
 srun plink --merge-list ${sample}_concat \
