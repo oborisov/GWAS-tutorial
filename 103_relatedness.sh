@@ -2,7 +2,6 @@
 # Checking relatedness using king
 # from http://people.virginia.edu/~wc9c/KING/manual.html
 # make sure that family ids are not identical (e.g., "0" for all samples), if needed, change FIDs to IIDs
-%%bash
 bfile=""
 salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
 srun king -b ${bfile}.bed \
@@ -30,10 +29,8 @@ plink --bfile ${bfile} \
 %%bash
 ## if there are no relatives, copy files with "_norelated" suffix
 bfile=""
-cp ${bfile}.bed ${bfile}_norelated.bed
-cp ${bfile}.bim ${bfile}_norelated.bim
-cp ${bfile}.fam ${bfile}_norelated.fam
-
+plink --bfile ${bfile} \
+--make-bed --out ${bfile}_norelated
 
 %%bash
 ## if there are no relatives and ids were updated
