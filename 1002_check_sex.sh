@@ -6,12 +6,16 @@ plink --bfile ${bfile} --extract <(cat ${bfile}_pruning.prune.in) \
 --make-bed --out ${bfile}_pruning
 plink --bfile ${bfile}_pruning --check-sex --out ${bfile}_sexcheck
 rm ${bfile}_pruning*
+Rscript -e 'fread(paste0(commandArgs(T), "_sexcheck.sexcheck"))[STATUS != "OK"]' ${bfile}
 
 %%R
 # listing samples with incorrect sex assignment
 bfile=""
 bfile=fread(paste0(bfile, "_sexcheck.sexcheck"))
 bfile[STATUS != "OK"]
+
+
+
 
 %%bash
 # Updating sex using SNPSEX (determined by X-chromosome)
