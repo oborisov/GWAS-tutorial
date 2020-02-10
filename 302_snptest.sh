@@ -13,7 +13,7 @@ awk '{if ($5 == "ADD") print $9}' ${bfile}_lambda.assoc.logistic > ${bfile}_lamb
 # remove temp files
 rm ${bfile}_lambda.assoc.logistic
 # Computing lambda
-Rscript -e 'bfile=commandArgs(T); dt=data.table(lambda_4pc=median(qchisq(1 - fread(paste0(bfile, "_lambda_P"), header=F)[[1]], 1), na.rm=T) / qchisq(0.5, 1)); fwrite(dt, paste0(bfile, "_lambda")); dt)' ${bfile} > ${bfile}_lambda
+Rscript -e 'bfile=commandArgs(T); dt=data.table(lambda_4pc=median(qchisq(1 - fread(paste0(bfile, "_lambda_P"), header=F)[[1]], 1), na.rm=T) / qchisq(0.5, 1)); fwrite(dt, paste0(bfile, "_lambda")); dt' ${bfile} > ${bfile}_lambda
 #####################################################
 
 %%R
