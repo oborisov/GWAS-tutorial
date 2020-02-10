@@ -1,6 +1,7 @@
-### --update-ids cannot be used in the same run as --update-parents or --update-sex.
 %%bash
 bfile="/home/borisov/nsCLP/LKG_2018_Sharknado/LKG_2018_Sharknado"
+
+### --update-ids cannot be used in the same run as --update-parents or --update-sex.
 
 echo "" > ${bfile}_updpheno_temp
 echo "" > ${bfile}_updsex_temp
