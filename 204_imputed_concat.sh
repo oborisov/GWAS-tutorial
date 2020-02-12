@@ -28,7 +28,8 @@ imputed_concat () {
         ${bfile}_ref_chr${chr}.phased.impute2_info
         # remove temporary chunks files
         rm ${bfile}_ref_chr${chr}.phased.impute2.${upper} \
-        ${bfile}_ref_chr${chr}.phased.impute2.${upper}_info
+        ${bfile}_ref_chr${chr}.phased.impute2.${upper}_info \
+        ${bfile}_ref_chr${chr}.phased.impute2.${upper}_samples
         mv ${bfile}_ref_chr${chr}.phased.impute2.${upper}_summary \
         ${bfile}_ref_chr${chr}.phased.impute2.${upper}_info_by_sample \
         ${bfile}_ref_chr${chr}.phased.impute2.${upper}_warnings \
