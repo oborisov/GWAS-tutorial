@@ -4,7 +4,7 @@ GRCh37.p13 chr 3 NC_000003.11:g.183635768C>T
 GRCh38.p12 chr 3 NC_000003.12:g.183917980C>T  
 %%bash
 bfile=""
-grep rs1000002 ${bfile}.bim
+grep -wF rs1000002 ${bfile}.bim
 
 
 
