@@ -30,12 +30,10 @@ for (x in 3:4) {
     eigenvec[, (mycol) := round(abs(eigenvec[[x]] - center_fun(eigenvec[[x]])) / var_fun(eigenvec[[x]])+0.5)]
 }
 sd_iids=eigenvec[sd_for_PC1 > n_sd | sd_for_PC2 > n_sd]$IID
-ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status, label = IID))+
+print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status, label = IID))+
 geom_point() +
 geom_label_repel(data=eigenvec[IID %in% sd_iids]) +
-ggtitle(paste0("PC1=", eigenval[1], " PC2=", eigenval[2], " PC3=", eigenval[3], " PC4=", eigenval[4]))
-
-%%R
+ggtitle(paste0("PC1=", eigenval[1], " PC2=", eigenval[2], " PC3=", eigenval[3], " PC4=", eigenval[4])))
 # More than n_sd SD outliers based on PC1 and PC2:
 fwrite(eigenvec[IID %in% sd_iids][,c(2,1)], paste0(bfile, "_eigen.rm"), col.names=F, sep=" ")
 eigenvec[IID %in% sd_iids][,c(1,2,13,14,15)]
