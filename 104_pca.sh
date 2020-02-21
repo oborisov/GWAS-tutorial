@@ -14,6 +14,8 @@ srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
 # visualizing 2 first principal components
 bfile=""
 n_sd=6
+use_SD=T
+if (use_SD) {center_fun <- mean; var_fun <- sd} else {center_fun <- median; var_fun <- IQR}
 system(paste0("rm ", bfile, "_pruned*"))
 library(ggrepel)
 eigenvec=fread(paste0(bfile, "_eigen.eigenvec"))
@@ -25,7 +27,7 @@ eigenvec[, cc_status := as.factor(cc_status)]
 for (x in 3:4) {
     ind=x+15
     mycol=paste0("sd_for_PC", x-2)
-    eigenvec[, (mycol) := round(abs(eigenvec[[x]] - median(eigenvec[[x]])) / IQR(eigenvec[[x]])+0.5)]
+    eigenvec[, (mycol) := round(abs(eigenvec[[x]] - center_fun(eigenvec[[x]])) / var_fun(eigenvec[[x]])+0.5)]
 }
 sd_iids=eigenvec[sd_for_PC1 > n_sd | sd_for_PC2 > n_sd]$IID
 ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status, label = IID))+
