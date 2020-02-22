@@ -31,3 +31,5 @@ plink --bfile ${bfile}_geno02_mind02_geno002 \
 --mind ${mind_set} \
 --allow-no-sex \
 --make-bed --out ${bfile}_geno02_mind02_geno002_mind002
+if [ -f ${bfile}_geno02_mind02.irem ]; then cat ${bfile}_geno02_mind02.irem; fi
+if [ -f ${bfile}_geno02_mind02_geno002_mind002.irem ]; then cat ${bfile}_geno02_mind02_geno002_mind002.irem; fi
