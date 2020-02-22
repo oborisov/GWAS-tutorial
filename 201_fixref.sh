@@ -29,7 +29,6 @@ sbatch --parsable --mem=16G --time=05:00:00 --cpus-per-task=8 \
     ${reference_fasta} \
     ${bcftools_plugins} \
     ${chr} >> ${bfile}_jobs.list
-rm ${bfile}_chr${chr}.vcf ${bfile}_chr${chr}.log
 done
 squeue | grep -wFf ${bfile}_jobs.list > /dev/null
 while [ $? -ne 1 ]; do sleep 5; squeue | grep -wFf ${bfile}_jobs.list > /dev/null; done
