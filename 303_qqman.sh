@@ -44,7 +44,8 @@ title(main = gsub(".*/(.*)_checkedsex.*","\\1",bfile),
       sub = paste0("Lambda=", round(lambda,4)))
 dev.off()
 
-# writing suggestive associations into a file
+# writing all and suggestive associations into a file
+fwrite(snptest_out_dt, paste0(bfile, "_all.tsv"), sep="\t", na=NA, quote=F)
 fwrite(snptest_out_dt[P < 1e-5], paste0(bfile, "_suggestive.tsv"), sep="\t", na=NA, quote=F)
 
 # ploting Manhattan and Q-Q plot to stdout
