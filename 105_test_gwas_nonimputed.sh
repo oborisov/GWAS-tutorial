@@ -16,5 +16,5 @@ pvec_4pc=fread(paste0(bfile, "_test_4pc", ".assoc.logistic"))
 pvec_4pc=pvec_4pc[TEST=="ADD"]
 print(data.table(lambda_nopc=median(qchisq(1 - pvec_nopc[[9]], 1), na.rm=T) / qchisq(0.5, 1),
           lambda_4pc=median(qchisq(1 - pvec_4pc[[9]], 1), na.rm=T) / qchisq(0.5, 1)))
-print(pvec_nopc[order(P)][1:5])
-print(pvec_4pc[order(P)][1:5])
+print(pvec_nopc[order(P)][1:10])
+print(pvec_4pc[order(P)][1:10])
