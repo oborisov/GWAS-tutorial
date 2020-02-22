@@ -1,8 +1,8 @@
 ### Checking (and converting) chip strand
-http://mccarthy.well.ox.ac.uk/chipendium/ui/
-GSAMD-24v1-0_20011747_A1
-Strand alignment TOP
-Probability of strand match 100 
+http://mccarthy.well.ox.ac.uk/chipendium/ui/  
+GSAMD-24v1-0_20011747_A1  
+Strand alignment TOP  
+Probability of strand match 100  
 
 %%bash
 bfile=""
