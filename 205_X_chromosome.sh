@@ -1,4 +1,5 @@
 %%bash
+# Imputing X chromosome
 bfile=""
 my_superpopulation=EUR # EUR, AMR, SAS, EAS, AFR
 ## Reassign default variables if run in other account / on other machine
