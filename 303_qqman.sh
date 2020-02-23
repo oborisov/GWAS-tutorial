@@ -21,6 +21,7 @@ snptest_out_dt=snptest_out_dt[info > info_threshold & cases_maf > maf_threshold 
 
 # adjusting CHR and p
 snptest_out_dt[CHR == "X", CHR := 23]
+snptest_out_dt[CHR == "0X", CHR := 23]
 snptest_out_dt[, CHR := as.numeric(CHR)]
 snptest_out_dt=snptest_out_dt[!is.na(snptest_out_dt$P) & P > 0]
 
