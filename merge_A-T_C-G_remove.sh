@@ -1,6 +1,6 @@
 %%bash
 # merge 2 data sets
-bfile=""
+bfile1=""
 bfile2=""
 bfile2_name=""
 plink --bfile ${bfile1} \
