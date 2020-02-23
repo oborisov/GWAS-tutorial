@@ -48,7 +48,7 @@ cat <(head -1 ${bfile}_ref.phased.sample) \
 <(tail -n +2 ${bfile}_ref.phased.sample) > \
 ${bfile}_ref.phased.sample2
 gen_prefix=${bfile}'_ref_chr${chr}.phased.impute2'
-for chr in {1..22}; do
+for chr in {1..22} X; do
     eval gen=${gen_prefix}
     salloc --job-name ${job_name} --mem=1000M --partition=long --time=72:00:00 --cpus-per-task=1 > ${gen}.out_slurm 2>&1 srun snptest \
     -data ${gen}.gz ${bfile}_ref.phased.sample2 \
