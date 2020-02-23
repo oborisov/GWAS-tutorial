@@ -16,7 +16,7 @@ plink --bfile ${bfile} --chr 23 --recode vcf --out ${bfile}_chr23
 bcftools annotate --rename-chrs <(echo "23 X") ${bfile}_chr23.vcf | bcftools +fixref -- -f ${reference_fasta} -m flip -d | bcftools sort | bcftools norm --rm-dup all -o ${bfile}_ref_chrX.vcf
 plink --vcf ${bfile}_ref_chrX.vcf --keep-allele-order --const-fid --update-sex <(awk '{print 0,$1,"_",$2,$5}' ${bfile}.fam | sed 's/\ _\ /_/') --pheno <(awk '{print 0,$1,"_",$2,$6}' ${bfile}.fam | sed 's/\ _\ /_/') --make-bed --out ${bfile}_ref_chrX_const_fid
 awk 'OFS="\t"{print $1,$2,$2,$2}' ${bfile}_ref_chrX_const_fid.fam > ${bfile}_ref_chrX_const_fid.fam_temp
-plink --bfile ${bfile}_ref_chrX_const_fid --update-ids temp --make-bed --out ${bfile}_ref_chrX
+plink --bfile ${bfile}_ref_chrX_const_fid --update-ids ${bfile}_ref_chrX_const_fid.fam_temp --make-bed --out ${bfile}_ref_chrX
 rm ${bfile}_ref_chrX_const_fid.fam_temp ${bfile}_ref_chrX_const_fid*
 
 ### Phasing
