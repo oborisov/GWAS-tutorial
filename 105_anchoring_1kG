@@ -1,0 +1,35 @@
+%%bash
+#anchoring
+bfile=""
+
+# extracting SNPs from 1000 Genomes
+echo ${bfile} > ${bfile}_1kg_temp
+for chr in {1..22}; do
+plink --bfile /home/borisov/software/1000GP_Phase3/vcf/chr${chr} \
+--extract <(awk '{print $2}' ${bfile}.bim) \
+--make-bed --out ${bfile}_1kg_temp_chr${chr}
+echo ${bfile}_1kg_temp_chr${chr} >> ${bfile}_1kg_temp
+done
+
+# merging 1000 genomes and data
+plink --merge-list ${bfile}_1kg_temp --out ${bfile}_1kg_temp
+plink --bfile ${bfile} \
+--exclude ${bfile}_1kg_temp.missnp \
+--make-bed --out ${bfile}_filt
+suffix=$(echo $bfile | sed 's/.*\///')
+cat ${bfile}_1kg_temp | sed "s/${suffix}$/${suffix}_filt/" > ${bfile}_1kg_temp2
+plink --merge-list ${bfile}_1kg_temp2 --out ${bfile}_1kg_temp
+
+# filter geno 0.01
+plink --bfile ${bfile}_1kg_temp --geno 0.01 --make-bed --out ${bfile}_1kg_temp_geno001
+
+# performing pca with plink2
+bfile=${bfile}_1kg_temp_geno001
+plink --bfile ${bfile} \
+--indep-pairwise 1000 50 0.2 \
+--out ${bfile}_pruned
+plink --bfile ${bfile} \
+--extract <(cat ${bfile}_pruned.prune.in) \
+--make-bed --out ${bfile}_pruned
+salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
+srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
