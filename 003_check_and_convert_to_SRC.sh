@@ -12,3 +12,8 @@ bash /home/borisov/software/update_build.sh \
 ${bfile} \
 /home/borisov/software/manifest_strand/${strand_file}.strand \
 ${bfile}_SRC
+
+#Strand files:
+#Script: https://www.well.ox.ac.uk/~wrayner/strand/update_build.sh  
+#TOP: https://www.well.ox.ac.uk/~wrayner/strand/index.html  
+#SRC: https://www.well.ox.ac.uk/~wrayner/strand/sourceStrand/index.html  
