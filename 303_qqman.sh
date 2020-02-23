@@ -20,8 +20,8 @@ colnames(snptest_out_dt)=c("SNP", "CHR", "BP", "info", "cases_maf", "controls_ma
 snptest_out_dt=snptest_out_dt[info > info_threshold & cases_maf > maf_threshold & controls_maf > maf_threshold]
 
 # adjusting CHR and p
-snptest_out_dt[CHR == "X", CHR := 23]
-snptest_out_dt[CHR == "0X", CHR := 23]
+snptest_out_dt[CHR == "X", CHR := "23"]
+snptest_out_dt[CHR == "0X", CHR := "23"]
 snptest_out_dt[, CHR := as.numeric(CHR)]
 snptest_out_dt=snptest_out_dt[!is.na(snptest_out_dt$P) & P > 0]
 
@@ -45,7 +45,7 @@ title(main = gsub(".*/(.*)_checkedsex.*","\\1",bfile),
       sub = paste0("Lambda=", round(lambda,4)))
 dev.off()
 
-# writing all and suggestive associations into a file
+# writing suggestive associations into a file
 fwrite(snptest_out_dt, paste0(bfile, "_all.tsv"), sep="\t", na=NA, quote=F)
 fwrite(snptest_out_dt[P < 1e-5], paste0(bfile, "_suggestive.tsv"), sep="\t", na=NA, quote=F)
 
