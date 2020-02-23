@@ -33,3 +33,22 @@ plink --bfile ${bfile} \
 --make-bed --out ${bfile}_pruned
 salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
 srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
+
+
+### Visualizing
+
+%%R
+bfile=""
+kg_sample_file="/home/borisov/software/1000GP_Phase3/1000GP_Phase3.sample"
+kg_sample=fread(kg_sample_file)
+eigenvec=fread(paste0(bfile, "_1kg_temp_geno001_eigen.eigenvec"))
+eigenvec=merge(eigenvec, kg_sample, by.x="IID", by.y="sample", all.x=T)
+eigenvec[is.na(population), population := "cases"]
+eigenvec[is.na(group), group := "cases"]
+print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=group)) +
+geom_point())
+print(ggplot(eigenvec[PC1 > -0.015 & PC2 < 0.015], aes(x=PC1, y=PC2, color=group)) +
+geom_point())
+eigenvec1=eigenvec; eigenvec1[population == "FIN", group := "FIN"]
+print(ggplot(eigenvec[PC1 > 0 & PC2 < 0], aes(x=PC1, y=PC2, color=group)) +
+geom_point())
