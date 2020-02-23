@@ -1,4 +1,9 @@
 %%bash
+# check if X is split into 23 and 25 (pseudoautosomal region), split if needed
+bfile=""
+plink --bfile ${bfile} --split-x hg19 --out ${bfile}_splitX
+
+%%bash
 # checking sex of samples using X-chromosome
 bfile=""
 plink --bfile ${bfile} --chr 23 --indep-pairwise 1000 50 0.2 --out ${bfile}_pruning
