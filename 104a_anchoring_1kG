@@ -51,4 +51,5 @@ geom_point())
 eigenvec1=eigenvec; eigenvec1[population == "FIN", group := "FIN"]
 print(ggplot(eigenvec[PC1 > 0 & PC2 < 0], aes(x=PC1, y=PC2, color=group)) +
 geom_point())
-system(paste0("rm ", bfile, "_1kg_temp*"))
+system(paste0("rm ", bfile, "_1kg_temp_chr*"))
+system(paste0("rm ", bfile, "_filt*"))
