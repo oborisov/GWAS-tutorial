@@ -42,7 +42,7 @@ eigenvec[IID %in% sd_iids][,c(1,2,13,14,15)]
 # removing pc outliers (using _eigen.rm)
 bfile=""
 plink --bfile ${bfile} \
---remove <(grep -wFf ${bfile}_eigen.rm ${bfile}.fam) \
+--remove <(grep -wFf <(awk '{print $2}' ${bfile}_eigen.rm) ${bfile}.fam) \
 --make-bed --out ${bfile}_pca
 rm ${bfile}_eigen.rm
 
