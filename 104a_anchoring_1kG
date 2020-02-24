@@ -42,7 +42,7 @@ kg_sample_file="/home/borisov/software/1000GP_Phase3/1000GP_Phase3.sample"
 kg_sample=fread(kg_sample_file)
 eigenvec=fread(paste0(bfile, "_1kg_temp_geno001_eigen.eigenvec"))
 eigenvec=merge(eigenvec, kg_sample, by.x="IID", by.y="sample", all.x=T)
-eigenvec[is.na(population), population := "cases"]
+eigenvec[is.na(population), population := "samples"]
 eigenvec[is.na(group), group := "cases"]
 print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=group)) +
 geom_point())
