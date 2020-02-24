@@ -43,7 +43,7 @@ kg_sample=fread(kg_sample_file)
 eigenvec=fread(paste0(bfile, "_1kg_temp_geno001_eigen.eigenvec"))
 eigenvec=merge(eigenvec, kg_sample, by.x="IID", by.y="sample", all.x=T)
 eigenvec[is.na(population), population := "samples"]
-eigenvec[is.na(group), group := "cases"]
+eigenvec[is.na(group), group := "samples"]
 print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=group)) +
 geom_point())
 print(ggplot(eigenvec[PC1 > -0.015 & PC2 < 0.015], aes(x=PC1, y=PC2, color=group)) +
