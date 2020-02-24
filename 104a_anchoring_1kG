@@ -1,5 +1,5 @@
 %%bash
-#anchoring
+# anchoring to 1kG
 bfile=""
 
 # extracting SNPs from 1000 Genomes
@@ -35,8 +35,8 @@ salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
 srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
 
 
-### Visualizing
 %%R
+### Visualizing
 bfile=""
 kg_sample_file="/home/borisov/software/1000GP_Phase3/1000GP_Phase3.sample"
 kg_sample=fread(kg_sample_file)
