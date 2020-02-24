@@ -42,7 +42,7 @@ for chr in {1..22} X; do
     -assume_chromosome $chr \
     -o ${gen}_imputedPC.out.gz &
 done
-
+wait
 
 #sstatus=$(sacct --format="JobName%30, State" | grep snptest_LKG_2010 | awk '{print $2}' | sort | uniq -c | awk '{print $2}')
 #if [ ${sstatus} == "RUNNING" ]; then echo eq; f
