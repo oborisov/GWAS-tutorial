@@ -38,3 +38,12 @@ print(qq(pvec_4pc$P))
 title(main = gsub(".*/(.*)_checkedsex.*","\\1",bfile),
       sub = paste0("Lambda=", round(lambda,4)))
 
+%%bash
+# manual check of some SNPs
+bfile=""
+plink --bfile ${bfile} \
+--extract <(echo rs4252209) \
+--freq case-control --hardy \
+--out ${bfile}_rs4252209
+cat /home/borisov/nsCLP/LKG_2019_HEXMEX/LKG_2019_HEXMEX_checkedsex_geno02_mind02_geno002_mind002_norelated_pca_pca_pca_pca_pca_pca_rs4252209.hwe
+cat /home/borisov/nsCLP/LKG_2019_HEXMEX/LKG_2019_HEXMEX_checkedsex_geno02_mind02_geno002_mind002_norelated_pca_pca_pca_pca_pca_pca_rs4252209.frq.cc
