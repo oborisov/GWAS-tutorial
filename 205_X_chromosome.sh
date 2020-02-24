@@ -51,3 +51,7 @@ done
 gzip -f ${bfile}_ref_chrX.phased.impute2_info; gzip -f ${bfile}_ref_chrX.phased.impute2;
 
 echo "X chromosome is done"
+
+###
+# if needed, add additional filtering of missingness on X chr # geno=0.02 # ${bfile}_ref_chrX_const_fid_nofilt plink --bfile ${bfile}_ref_chrX_const_fid_nofilt --geno ${geno} --make-bed --out ${bfile}_ref_chrX
+
