@@ -12,9 +12,9 @@ lapply(c("qqman", "QCEWAS", "RColorBrewer"), require, character.only = TRUE)
 # reading snptest output into dt
 snptest_out_list_files=list.files(path=gsub("(.*/).*","\\1",bfile), pattern=paste0(gsub(".*/","",bfile), ".*.out.gz$"), full.names=T)
 snptest_out_dt=rbindlist(sapply(snptest_out_list_files, function(x) {
-    fread(cmd=paste0("zcat ", x, " | grep -v \\#"))[,c("rsid", "chromosome", "position", "info", "cases_maf", "controls_maf", "frequentist_add_pvalue")]
+    fread(cmd=paste0("zcat ", x, " | grep -v \\#"))[,c("rsid", "chromosome", "position", "info", "cases_maf", "controls_maf", "frequentist_add_pvalue", "frequentist_add_beta_1", "frequentist_add_se_1", "alleleB", "alleleA")]
 }, simplify=F))
-colnames(snptest_out_dt)=c("SNP", "CHR", "BP", "info", "cases_maf", "controls_maf", "P")
+colnames(snptest_out_dt)=c("SNP", "CHR", "BP", "info", "cases_maf", "controls_maf", "P", "BETA", "SE", "effectAllele", "otherAllele")
 
 # filtering snptest using info and maf
 snptest_out_dt=snptest_out_dt[info > info_threshold & cases_maf > maf_threshold & controls_maf > maf_threshold]
