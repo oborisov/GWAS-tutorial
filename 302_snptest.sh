@@ -1,7 +1,6 @@
 %%R
 #creating sample with PCs
 bfile=""
-# the rest will run automatically
 shapeit_sample=fread(paste0(bfile, "_ref_chr1.phased.sample"), header=T)
 eigenvec=fread(paste0(bfile, "_ref.phased.sample_concat_eigen.eigenvec"), header=T)
 fam=fread(paste0(bfile, "_ref.phased.sample_concat.fam"), header=F)
@@ -21,8 +20,8 @@ fwrite(shapeit_sample_pc_fam, paste0(bfile, "_ref.phased.sample"), sep=" ", na="
 #####################################################
 
 %%bash
+# snptest
 bfile=""
-# the rest will run automatically
 job_suffix=$(echo $bfile | sed 's/.*\///')
 job_name="snptest_${job_suffix}"
 cat <(head -1 ${bfile}_ref.phased.sample) \
