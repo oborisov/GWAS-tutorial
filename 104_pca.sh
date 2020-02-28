@@ -44,7 +44,6 @@ bfile=""
 plink --bfile ${bfile} \
 --remove <(grep -wFf <(awk '{print $2}' ${bfile}_eigen.rm) ${bfile}.fam) \
 --make-bed --out ${bfile}_pca
-rm ${bfile}_eigen.rm
 
 %%bash
 # if there are no pc outliers, copy files with "_pca" suffix
