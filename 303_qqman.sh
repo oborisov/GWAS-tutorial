@@ -49,6 +49,9 @@ dev.off()
 fwrite(snptest_out_dt, paste0(bfile, "_all.tsv"), sep="\t", na=NA, quote=F)
 fwrite(snptest_out_dt[P < 1e-5], paste0(bfile, "_suggestive.tsv"), sep="\t", na=NA, quote=F)
 
+system(paste0("gzip -f ", bfile, "_all.tsv"))
+system(paste0("gzip -f ", bfile, "_suggestive.tsv"))
+
 # ploting Manhattan and Q-Q plot to stdout
 print(manhattan(snptest_out_dt, chr="CHR", bp="BP", p="P", snp="SNP",
                 annotatePval = 1, annotateTop = T,
