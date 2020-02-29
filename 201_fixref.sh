@@ -9,14 +9,14 @@
 ## Assign path to bfile
 bfile=""
 ## Reassign default variables if run in other account / on other machine
-bcftools_plugins="/home/borisov/.conda/envs/borisov_env/bcftools-1.9/plugins/"
+bcftools_plugins="/home/borisov/.conda/envs/borisov_env/bcftools-1.9/plugins"
 reference_fasta="/home/borisov/software/human_g1k_v37.fasta"
 # the following run automatically
 rm ${bfile}_jobs.list >/dev/null 2>&1
 echo '#!/bin/bash
 bfile=$1
 reference_fasta=$2
-export $3
+export BCFTOOLS_PLUGINS=${3}
 chr=$4
 echo "fixref chromosome ${chr}"
 plink --bfile ${bfile} --chr ${chr} --recode vcf --out ${bfile}_chr${chr}
