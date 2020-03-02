@@ -38,18 +38,21 @@ srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
 %%R
 ### Visualizing
 bfile=""
+n_PC=4; bfile_population="EUR"
+library(ggrepel)
 kg_sample_file="/home/borisov/software/1000GP_Phase3/1000GP_Phase3.sample"
 kg_sample=fread(kg_sample_file)
+fam=fread(paste0(bfile, ".fam"))
 eigenvec=fread(paste0(bfile, "_1kg_temp_geno001_eigen.eigenvec"))
 eigenvec=merge(eigenvec, kg_sample, by.x="IID", by.y="sample", all.x=T)
 eigenvec[is.na(population), population := "samples"]
 eigenvec[is.na(group), group := "samples"]
-print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=group)) +
-geom_point())
-print(ggplot(eigenvec[PC1 > -0.015 & PC2 < 0.015], aes(x=PC1, y=PC2, color=group)) +
-geom_point())
-eigenvec1=eigenvec; eigenvec1[population == "FIN", group := "FIN"]
-print(ggplot(eigenvec[PC1 > 0 & PC2 < 0], aes(x=PC1, y=PC2, color=group)) +
-geom_point())
+PC_means=eigenvec[group != "samples"][,list(PC1_mean=mean(PC1), PC2_mean=mean(PC2), PC3_mean=mean(PC3),PC4_mean=mean(PC4), PC5_mean=mean(PC5), PC6_mean=mean(PC6), PC7_mean=mean(PC7),PC8_mean=mean(PC8), PC9_mean=mean(PC9),PC10_mean=mean(PC10)),by=group]
+distances_dt=data.table(IID=eigenvec[group == "samples"]$IID, t(apply(eigenvec[group == "samples"][,3:(n_PC+2)], 1, function(person) { apply(PC_means[,2:(n_PC+1)],1, function(x) { dist(rbind(person,x))  })})))
+colnames(distances_dt) = c("IID", PC_means$group)
+distances_dt$PC_group = PC_means$group[apply(distances_dt[,2:6], 1, which.min)]
+print(distances_dt[PC_group != bfile_population])
+print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=group, label=IID)) +
+geom_point() + geom_label_repel(data=eigenvec[IID %in% distances_dt[PC_group != bfile_population]$IID]))
 system(paste0("rm ", bfile, "_1kg_temp_chr*"))
 system(paste0("rm ", bfile, "_filt*"))
