@@ -14,9 +14,9 @@ rm ${bfile}_pruning*
 Rscript -e 'fread(paste0(commandArgs(T), "_sexcheck.sexcheck"))[STATUS != "OK"]' ${bfile}
 
 %%bash
+bfile=""
 # Updating sex using SNPSEX (determined by X-chromosome)
 # Removing SNPSEX=0
-bfile=""
 plink --bfile ${bfile} \
 --update-sex <(awk '{if ($5 == "PROBLEM") print $1,$2,$4}' ${bfile}_sexcheck.sexcheck) \
 --remove <(awk '{if ($4 == 0) print $1,$2}' ${bfile}_sexcheck.sexcheck) \
