@@ -12,7 +12,7 @@ srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
 
 %%R
 # visualizing 2 first principal components
-bfile="/home/borisov/LUTO/Dutch/dcg_splitX_checkedsex_geno02_mind02_geno002_mind002_updids_norelated_pca_pca_pca_pca_pca_pca_pca"
+bfile=""
 n_PC=4
 n_sd=6
 use_SD=T
