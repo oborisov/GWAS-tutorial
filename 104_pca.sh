@@ -13,7 +13,7 @@ srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
 %%R
 # visualizing 2 first principal components
 bfile=""
-n_PC=2
+n_PC=1
 n_sd=6
 use_SD=T
 
