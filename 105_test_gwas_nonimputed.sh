@@ -1,10 +1,6 @@
 %%bash
 bfile=""
 plink --bfile ${bfile} \
---logistic \
---out ${bfile}_test_nopc
-Rscript -e 'print(paste0("lambda no PC ", median(qchisq(1 - fread(commandArgs(T))[TEST=="ADD"][[9]], 1), na.rm=T) / qchisq(0.5, 1)))' ${bfile}_test_nopc.assoc.logistic
-plink --bfile ${bfile} \
 --covar ${bfile}_eigen.eigenvec \
 --covar-name PC1, PC2, PC3, PC4 \
 --logistic \
