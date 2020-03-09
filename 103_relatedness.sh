@@ -6,7 +6,7 @@ bfile=""
 salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
 srun king -b ${bfile}.bed \
 --related \
---degree 2 \
+--degree 3 \
 --prefix ${bfile} \
 --cpus 20
 
