@@ -2,13 +2,8 @@
 ## Standard QC for genotyping data: maf, missingness of samples and variants, hwe
 ## Make sure that sex is present, otherwise HWE will remove the majority of X-chromosome variants
 # Source: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6001694/
-# user can set maf, geno, mind by passing 2nd 3rd and 4th argument to maf_geno_mind_hwe
-# minor allele frequency (maf): excluding variants with maf < 0.01
-# SNP missingness (geno): excluding variants with missingness in > 2% of samples
-# Hardy–Weinberg equilibrium (hwe): excluding variants deviating from HWE with P<1e-10 (for cases and controls) and P<1-e6 (for controls only)
-# individual missingness (mind): excluding samples with > 2% of missing variants 
 bfile=""
-maf_set=0.01
+maf_set=0.001
 geno_set=0.02
 mind_set=0.02
 echo $bfile $maf_set $geno_set $mind_set
