@@ -8,7 +8,7 @@ colnames(eigenvec)[2]="ID_1"
 eigenvec=eigenvec[,-1]
 colnames(fam)[c(2,5:6)]=c("ID_1", "sex", "case_control")
 fam=fam[,c(2,5:6)]
-shapeit_sample_pc_fam=Reduce(merge, list(shapeit_sample, eigenvec, fam))
+shapeit_sample_pc_fam=Reduce(function(x, y) merge(x, y, , all=T), list(shapeit_sample, eigenvec, fam))
 shapeit_sample_pc_fam=shapeit_sample_pc_fam[match(shapeit_sample$ID_1, shapeit_sample_pc_fam$ID_1)]
 if (!all(shapeit_sample_pc_fam$ID_1 == shapeit_sample$ID_1, na.rm=T)) {
     stop("sample with PC does not match shapeit sample!")
@@ -18,6 +18,7 @@ shapeit_sample_pc_fam[, case_control:=case_control-1]
 shapeit_sample_pc_fam=shapeit_sample_pc_fam[-1]
 fwrite(shapeit_sample_pc_fam, paste0(bfile, "_ref.phased.sample"), sep=" ", na="NA", quote=F)
 #####################################################
+
 
 %%bash
 # snptest
