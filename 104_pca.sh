@@ -13,7 +13,7 @@ srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
 %%R
 # PC1&PC2 plot with centoid pc computed outliers
 bfile=""
-n_PC=2
+n_PC=4
 n_sd=6
 use_SD=T
 if (use_SD) {center_fun <- mean; var_fun <- sd} else {center_fun <- median; var_fun <- IQR}
