@@ -54,7 +54,7 @@ for (x in 3:4) {
     eigenvec[, (mycol) := round(abs(eigenvec[[x]] - center_fun(eigenvec[[x]])) / var_fun(eigenvec[[x]])+0.5)]
 }
 sd_iids=eigenvec[sd_for_PC1 > n_sd | sd_for_PC2 > n_sd]$IID
-print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=country, label = IID))+
+print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status, label = IID))+
 geom_point() +
 geom_label_repel(data=eigenvec[IID %in% sd_iids]) +
 ggtitle(paste0("PC1=", eigenval[1], " PC2=", eigenval[2], " PC3=", eigenval[3], " PC4=", eigenval[4])))
