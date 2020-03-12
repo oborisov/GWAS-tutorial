@@ -11,12 +11,11 @@ salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
 srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
 
 %%R
-# visualizing 2 first principal components
+# PC1&PC2 plot with centoid pc computed outliers
 bfile=""
 n_PC=2
 n_sd=6
 use_SD=T
-
 if (use_SD) {center_fun <- mean; var_fun <- sd} else {center_fun <- median; var_fun <- IQR}
 system(paste0("rm ", bfile, "_pruned*"))
 library(ggrepel)
@@ -34,6 +33,37 @@ geom_point() + geom_label_repel(data=eigenvec[IID %in% sd_iids]) +
 ggtitle(paste0("PC1=", eigenval[1], " PC2=", eigenval[2], " PC3=", eigenval[3], " PC4=", eigenval[4])))
 fwrite(eigenvec[IID %in% sd_iids][,c(2,1)], paste0(bfile, "_eigen.rm"), col.names=F, sep=" ")
 eigenvec[IID %in% sd_iids]
+
+%%R
+bfile=""
+# PC1&PC2 plot with independent pc computed outliers
+n_sd=6
+use_SD=T
+if (use_SD) {center_fun <- mean; var_fun <- sd} else {center_fun <- median; var_fun <- IQR}
+system(paste0("rm ", bfile, "_pruned*"))
+library(ggrepel)
+eigenvec=fread(paste0(bfile, "_eigen.eigenvec"))
+eigenval=fread(paste0(bfile, "_eigen.eigenval"), header=F)
+fam=fread(paste0(bfile, ".fam"), header=F)
+colnames(fam)[6]="cc_status"
+eigenvec=merge(eigenvec, fam[,c(2,6)], by.x="IID", by.y="V2")
+eigenvec$country="DE"
+eigenvec[grepl("NL", IID), country:="NL"]
+eigenvec[, cc_status := as.factor(cc_status)]
+for (x in 3:4) {
+    ind=x+15
+    mycol=paste0("sd_for_PC", x-2)
+    eigenvec[, (mycol) := round(abs(eigenvec[[x]] - center_fun(eigenvec[[x]])) / var_fun(eigenvec[[x]])+0.5)]
+}
+sd_iids=eigenvec[sd_for_PC1 > n_sd | sd_for_PC2 > n_sd]$IID
+print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=country, label = IID))+
+geom_point() +
+geom_label_repel(data=eigenvec[IID %in% sd_iids]) +
+ggtitle(paste0("PC1=", eigenval[1], " PC2=", eigenval[2], " PC3=", eigenval[3], " PC4=", eigenval[4])))
+# More than n_sd SD outliers based on PC1 and PC2:
+fwrite(eigenvec[IID %in% sd_iids][,c(2,1)], paste0(bfile, "_eigen.rm"), col.names=F, sep=" ")
+eigenvec[IID %in% sd_iids][,c(1,2,13,14,15)]
+
 
 %%bash
 # removing pc outliers (using _eigen.rm)
