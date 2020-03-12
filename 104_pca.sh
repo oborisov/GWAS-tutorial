@@ -47,8 +47,6 @@ eigenval=fread(paste0(bfile, "_eigen.eigenval"), header=F)
 fam=fread(paste0(bfile, ".fam"), header=F)
 colnames(fam)[6]="cc_status"
 eigenvec=merge(eigenvec, fam[,c(2,6)], by.x="IID", by.y="V2")
-eigenvec$country="DE"
-eigenvec[grepl("NL", IID), country:="NL"]
 eigenvec[, cc_status := as.factor(cc_status)]
 for (x in 3:4) {
     ind=x+15
