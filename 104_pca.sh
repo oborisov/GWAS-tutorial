@@ -3,7 +3,7 @@
 bfile=""
 plink --bfile ${bfile} \
 --indep-pairwise 1000 50 0.2 \
---out ${bfile}_pruned
+--out ${bfile}_pruned > /dev/null 2>&1
 plink --bfile ${bfile} \
 --extract <(cat ${bfile}_pruned.prune.in) \
 --make-bed --out ${bfile}_pruned
