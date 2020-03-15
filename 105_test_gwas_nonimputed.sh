@@ -21,6 +21,7 @@ print("Lambda"); print(median(qchisq(1 - pvec_4pc[[9]], 1), na.rm=T) / qchisq(0.
 print(manhattan(rbind(pvec_4pc[P<5e-2], pvec_4pc[P>5e-2][seq(1,nrow(pvec_4pc[P>5e-2]),10)]), chr="CHR", bp="BP", p="P", snp="SNP", annotatePval = 1, annotateTop = T, col=brewer.pal(8, "Dark2")))
 # producing Q-Q plot
 print(qq(pvec_4pc$P))
+title(main = paste0("Lambda=", round(lambda,4)))
 
 
 %%bash
