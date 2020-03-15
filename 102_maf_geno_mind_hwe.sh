@@ -28,3 +28,14 @@ plink --bfile ${bfile}_geno02_mind02_geno002 \
 --make-bed --out ${bfile}_geno02_mind02_geno002_mind002
 if [ -f ${bfile}_geno02_mind02.irem ]; then cat ${bfile}_geno02_mind02.irem; fi
 if [ -f ${bfile}_geno02_mind02_geno002_mind002.irem ]; then cat ${bfile}_geno02_mind02_geno002_mind002.irem; fi
+
+
+
+%%R
+# intersection between checksex and samples with missingness
+bfile=""
+sexcheck=fread(paste0(bfile, "_sexcheck.sexcheck"))[STATUS != "OK"]
+irem=rbindlist(lapply(list.files(path=gsub("(.*/).*", "\\1", bfile), pattern="irem", full.names=T), fread))
+sexcheck_irem=merge(sexcheck, irem, by.x=c("FID", "IID"), by.y=c("V1", "V2"), all=T)
+print(dim(irem))
+sexcheck_irem
