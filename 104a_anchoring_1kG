@@ -7,7 +7,7 @@ echo ${bfile} > ${bfile}_1kg_temp
 for chr in {1..22}; do
 plink --bfile /home/borisov/software/1000GP_Phase3/vcf/chr${chr} \
 --extract <(awk '{print $2}' ${bfile}.bim) \
---make-bed --out ${bfile}_1kg_temp_chr${chr}
+--make-bed --out ${bfile}_1kg_temp_chr${chr} > /dev/null 2>&1
 echo ${bfile}_1kg_temp_chr${chr} >> ${bfile}_1kg_temp
 done
 
