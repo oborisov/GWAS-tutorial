@@ -25,7 +25,6 @@ bfile=""
 plink --bfile ${bfile} \
 --remove <(awk '{print $1,$2}' ${bfile}.kin0 | tail -n +2) \
 --make-bed --out ${bfile}_norelated
-echo "Removed sample(s):"
 cat ${bfile}.kin0
 
 %%bash
