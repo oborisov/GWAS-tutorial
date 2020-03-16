@@ -61,7 +61,7 @@ distances_dt$PC_group = PC_means$group[apply(distances_dt[,2:6], 1, which.min)]
 
 # Print outliers IDs to stdout
 print(distances_dt[PC_group != bfile_population][,c(1,ncol(distances_dt)), with=F])
-fwrite(eigenvec[IID %in% distances_dt[PC_group != bfile_population]$IID, c(2,1)], paste0(bfile, "_1kG.rm"), sep="\t", col.names=T, quote=F, na=NA)
+fwrite(eigenvec[IID %in% distances_dt[PC_group != bfile_population]$IID, c(2,1)], paste0(bfile, "_1kG.rm"), sep="\t", col.names=F, quote=F, na=NA)
 
 # PCA plot. Highlight outliers IDs
 print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=group, label=IID)) +
