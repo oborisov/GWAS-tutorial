@@ -12,7 +12,7 @@ srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
 
 %%R
 bfile=""
-# independent pc computed outliers
+# PC1&PC2 plot with independent pc computed outliers
 n_PC=2
 n_sd=6
 use_SD=T
@@ -37,7 +37,7 @@ print(eigenvec_melt[value > n_sd])
 
 print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status, label = IID))+
 geom_point() +
-geom_label_repel(data=eigenvec[IID %in% sd_iids]) + theme_bw())
+geom_label_repel(data=eigenvec[IID %in% eigenvec_melt[value > n_sd]$IID]) + theme_bw())
 ggsave(paste0(bfile, "_eigen.eigenvec_pca.jpeg"))
 
 # More than n_sd SD outliers based on PC1 and PC2:
