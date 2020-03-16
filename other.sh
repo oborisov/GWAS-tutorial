@@ -98,3 +98,31 @@ srun bcftools +fixref ${bfile}_chr${chr}.vcf -- -f ${reference_fasta} -m flip -d
 bcftools sort | bcftools norm --rm-dup all -o ${bfile}_ref_chr${chr}.vcf
 done
 echo "fixref is done"
+
+
+
+
+%%R
+# PC1&PC2 plot with centoid pc computed outliers
+bfile=""
+n_PC=4
+n_sd=6
+use_SD=T
+if (use_SD) {center_fun <- mean; var_fun <- sd} else {center_fun <- median; var_fun <- IQR}
+system(paste0("rm ", bfile, "_pruned*"))
+library(ggrepel)
+eigenvec=fread(paste0(bfile, "_eigen.eigenvec"))
+eigenval=fread(paste0(bfile, "_eigen.eigenval"), header=F)
+fam=fread(paste0(bfile, ".fam"), header=F)
+colnames(fam)[6]="cc_status"
+PC_means=data.table(t(sapply(eigenvec[,3:12], center_fun)))
+eigenvec[, distance := apply(eigenvec[,3:(n_PC+2)], 1, function(vector_person_PCs) { apply(PC_means[,1:n_PC], 1, function(vector_PCs_means) { dist(rbind(vector_person_PCs, vector_PCs_means)) }) })]
+eigenvec=merge(eigenvec, fam[,c(2,6)], by.x="IID", by.y="V2")
+eigenvec[, cc_status := as.factor(cc_status)]
+sd_iids=eigenvec[distance > n_sd*var_fun(distance)]$IID
+print(ggplot(eigenvec, aes(x=PC1, y=PC2, color=cc_status, label = IID))+
+geom_point() + geom_label_repel(data=eigenvec[IID %in% sd_iids]) +
+ggtitle(paste0("PC1=", eigenval[1], " PC2=", eigenval[2], " PC3=", eigenval[3], " PC4=", eigenval[4])))
+fwrite(eigenvec[IID %in% sd_iids][,c(2,1)], paste0(bfile, "_eigen.rm"), col.names=F, sep=" ")
+eigenvec[IID %in% sd_iids]
+
