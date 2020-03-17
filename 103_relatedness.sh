@@ -11,15 +11,6 @@ srun king -b ${bfile}.bed \
 --cpus 20
 
 %%bash
-# script to update fids
-bfile=""
-awk '{print $1,$2,$2,$2}' ${bfile}.fam > ${bfile}_update_ids_temp
-plink --bfile ${bfile} \
---update-ids ${bfile}_update_ids_temp \
---make-bed --out ${bfile}_updids
-rm ${bfile}_update_ids_temp
-
-%%bash
 # remove relatives
 bfile=""
 plink --bfile ${bfile} \
@@ -34,8 +25,11 @@ plink --bfile ${bfile} \
 --make-bed --out ${bfile}_norelated
 
 %%bash
-## if there are no relatives and ids were updated
+# script to update fids
 bfile=""
-mv ${bfile}_updids.bed ${bfile}_norelated.bed
-mv ${bfile}_updids.bim ${bfile}_norelated.bim
-mv ${bfile}_updids.fam ${bfile}_norelated.fam
+awk '{print $1,$2,$2,$2}' ${bfile}.fam > ${bfile}_update_ids_temp
+plink --bfile ${bfile} \
+--update-ids ${bfile}_update_ids_temp \
+--make-bed --out ${bfile}_updids
+rm ${bfile}_update_ids_temp
+
