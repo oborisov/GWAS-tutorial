@@ -11,6 +11,16 @@ srun king -b ${bfile}.bed \
 --cpus 20
 
 %%bash
+# call rate
+bfile=""
+plink --bfile ${bfile} \
+--keep <(cat <(awk '{print $1,$2}' ${bfile}.kin0 | tail -n +2) <(awk '{print $3,$4}' ${bfile}.kin0 | tail -n +2) ) \
+--missing --out ${bfile}_CR
+cat ${bfile}_CR.imiss
+
+
+
+%%bash
 # remove relatives
 bfile=""
 plink --bfile ${bfile} \
