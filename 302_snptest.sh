@@ -21,8 +21,11 @@ fwrite(shapeit_sample_pc_fam, paste0(bfile, "_ref.phased.sample"), sep=" ", na="
 
 
 %%bash
-# snptest
 bfile=""
+cat <(cat `ls ${bfile}*.rm | grep -v phased | grep -v pca`| tr " " "_" | awk '{print $1}') \
+<(cat `ls ${bfile}*.rm | grep phased` | awk '{print $1}') > \
+${bfile}_snptest_remove
+# the rest will run automatically
 job_suffix=$(echo $bfile | sed 's/.*\///')
 job_name="snptest_${job_suffix}"
 cat <(head -1 ${bfile}_ref.phased.sample) \
@@ -41,6 +44,7 @@ for chr in {1..22} X; do
     -hwe \
     -missing_code NA \
     -assume_chromosome $chr \
+    -exclude_samples ${bfile}_snptest_remove \
     -o ${gen}_imputedPC.out.gz &
 done
 wait
