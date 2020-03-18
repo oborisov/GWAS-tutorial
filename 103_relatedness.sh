@@ -10,7 +10,7 @@ srun king -b ${bfile}.bed \
 --cpus 20
 
 %%bash
-bfile="/home/borisov/LUTO/Bonn_Polish/Polish_cases_controls_geno02_mind02_geno002_mind002_updids"
+bfile=""
 degree=3
 # remove relatives
 if [ $degree == 3 ]; then kinship=0.0442; fi
