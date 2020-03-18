@@ -22,9 +22,6 @@ fwrite(shapeit_sample_pc_fam, paste0(bfile, "_ref.phased.sample"), sep=" ", na="
 
 %%bash
 bfile=""
-cat <(if ls ${bfile}*.rm | grep -v phased | grep -v pca > /dev/null; then cat `ls ${bfile}*.rm | grep -v phased | grep -v pca`| tr " " "_" | awk '{print $1}'; fi) \
-<(if ls ${bfile}*.rm | grep phased > /dev/null; then cat `ls ${bfile}*.rm | grep phased` | awk '{print $1}'; fi) > \
-${bfile}_snptest_remove
 # the rest will run automatically
 job_suffix=$(echo $bfile | sed 's/.*\///')
 job_name="snptest_${job_suffix}"
@@ -44,7 +41,6 @@ for chr in {1..22} X; do
     -hwe \
     -missing_code NA \
     -assume_chromosome $chr \
-    -exclude_samples ${bfile}_snptest_remove \
     -o ${gen}_imputedPC.out.gz &
 done
 wait
@@ -52,3 +48,7 @@ wait
 #sstatus=$(sacct --format="JobName%30, State" | grep snptest_LKG_2010 | awk '{print $2}' | sort | uniq -c | awk '{print $2}')
 #if [ ${sstatus} == "RUNNING" ]; then echo eq; f
 #while [ $? -ne 1 ]; do sleep 5; squeue | grep -wFf ${bfile}_jobs.list > /dev/null; done
+# cat <(if ls ${bfile}*.rm | grep -v phased | grep -v pca > /dev/null; then cat `ls ${bfile}*.rm | grep -v phased | grep -v pca`| tr " " "_" | awk '{print $1}'; fi) \
+#<(if ls ${bfile}*.rm | grep phased > /dev/null; then cat `ls ${bfile}*.rm | grep phased` | awk '{print $1}'; fi) > \
+#${bfile}_snptest_remove
+#    -exclude_samples ${bfile}_snptest_remove \
