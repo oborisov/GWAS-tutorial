@@ -5,11 +5,24 @@
 bfile=""
 salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
 srun king -b ${bfile}.bed \
---related \
---degree 3 \
+--kinship \
 --prefix ${bfile} \
 --cpus 20
 
+%%bash
+bfile="/home/borisov/LUTO/Bonn_Polish/Polish_cases_controls_geno02_mind02_geno002_mind002_updids"
+degree=3
+# remove relatives
+if [ $degree == 3 ]; then kinship=0.0442; fi
+if [ $degree == 2 ]; then kinship=0.0884; fi
+plink --bfile ${bfile} \
+--remove <(cat ${bfile}.kin0 | awk -v kinship=${kinship} '{if ($NF > kinship) print $0}') \
+--make-bed --out ${bfile}_norelated
+cat ${bfile}.kin0 | awk -v kinship=${kinship} '{if ($NF > kinship) print $0}'
+
+
+
+############################################
 %%bash
 # call rate
 bfile=""
@@ -17,22 +30,6 @@ plink --bfile ${bfile} \
 --keep <(cat <(awk '{print $1,$2}' ${bfile}.kin0 | tail -n +2) <(awk '{print $3,$4}' ${bfile}.kin0 | tail -n +2) ) \
 --missing --out ${bfile}_CR
 cat ${bfile}_CR.imiss
-
-
-
-%%bash
-# remove relatives
-bfile=""
-plink --bfile ${bfile} \
---remove <(awk '{print $1,$2}' ${bfile}.kin0 | tail -n +2) \
---make-bed --out ${bfile}_norelated
-cat ${bfile}.kin0
-
-%%bash
-## if there are no relatives, copy files with "_norelated" suffix
-bfile=""
-plink --bfile ${bfile} \
---make-bed --out ${bfile}_norelated
 
 %%bash
 # script to update fids
