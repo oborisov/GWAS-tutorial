@@ -22,7 +22,7 @@ fwrite(shapeit_sample_pc_fam, paste0(bfile, "_ref.phased.sample"), sep=" ", na="
 
 %%bash
 bfile=""
-# the rest will run automatically
+# snptest (association test)
 job_suffix=$(echo $bfile | sed 's/.*\///')
 job_name="snptest_${job_suffix}"
 cat <(head -1 ${bfile}_ref.phased.sample) \
