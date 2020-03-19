@@ -1,6 +1,5 @@
 %%bash
-# Checking relatedness using king
-# from http://people.virginia.edu/~wc9c/KING/manual.html
+# Checking relatedness using king http://people.virginia.edu/~wc9c/KING/manual.html
 # make sure that family ids are not identical (e.g., "0" for all samples), if needed, change FIDs to IIDs
 bfile=""
 salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
