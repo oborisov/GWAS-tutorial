@@ -6,7 +6,6 @@ bfile=""
 maf_set=0.001
 geno_set=0.02
 mind_set=0.02
-echo $bfile $maf_set $geno_set $mind_set
 plink --bfile ${bfile} \
 --maf ${maf_set} \
 --geno 0.2 \
