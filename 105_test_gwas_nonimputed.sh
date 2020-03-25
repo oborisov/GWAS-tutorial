@@ -22,6 +22,9 @@ print(manhattan(rbind(pvec_4pc[P<5e-2], pvec_4pc[P>5e-2][seq(1,nrow(pvec_4pc[P>5
 # producing Q-Q plot
 print(qq(pvec_4pc$P))
 title(main = paste0("Lambda=", round(lambda,4)))
+bim=fread(paste0(bfile, ".bim"))
+print(dim(bim[V2 %in% pvec_4pc[P < 5e-8]$SNP]))
+print(dim(bim[V2 %in% pvec_4pc[P < 5e-8]$SNP][V5 == "T" & V6 == "A" | V5 == "A" & V6 == "T" | V5 == "C" & V6 == "G" | V5 == "G" & V6 == "C"]))
 
 %%bash
 # manual check of some SNPs
@@ -32,3 +35,4 @@ plink --bfile ${bfile} \
 --out ${bfile}_rs4252209
 cat /home/borisov/nsCLP/LKG_2019_HEXMEX/LKG_2019_HEXMEX_checkedsex_geno02_mind02_geno002_mind002_norelated_pca_pca_pca_pca_pca_pca_rs4252209.hwe
 cat /home/borisov/nsCLP/LKG_2019_HEXMEX/LKG_2019_HEXMEX_checkedsex_geno02_mind02_geno002_mind002_norelated_pca_pca_pca_pca_pca_pca_rs4252209.frq.cc
+
