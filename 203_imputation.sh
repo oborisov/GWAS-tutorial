@@ -27,7 +27,7 @@ echo '#!/bin/bash
     -int ${lower} ${upper} \
     -Ne 20000 \
     -o ${bfile}_ref_chr${chr}.phased.impute2.${upper} \
-    -filt_rules_l "${my_superpopulation}<0.01" "TYPE==LOWCOV"
+    -filt_rules_l "${my_superpopulation}<0.001" "TYPE==LOWCOV"
 ' > ${bfile}_imputation.sh
 
 
