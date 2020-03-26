@@ -3,14 +3,13 @@ bfile=""
 plink --bfile ${bfile} \
 --covar ${bfile}_eigen.eigenvec \
 --covar-name PC1, PC2, PC3, PC4 \
---logistic \
+--logistic hide-covar \
 --out ${bfile}_test_4pc
 
 %%R
 bfile=""
 lapply(c("qqman", "RColorBrewer"), require, character.only = TRUE)
 pvec_4pc=fread(paste0(bfile, "_test_4pc", ".assoc.logistic"))
-pvec_4pc=pvec_4pc[TEST=="ADD"]
 print(pvec_4pc[order(P)][1:10])
 # adjusting CHR and p
 pvec_4pc[CHR == "X", CHR := 23]
