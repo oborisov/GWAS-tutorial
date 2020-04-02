@@ -14,11 +14,13 @@ degree=3
 # remove relatives
 if [ $degree == 3 ]; then kinship=0.0442; fi
 if [ $degree == 2 ]; then kinship=0.0884; fi
+rm ${bfile}.related_excluded
 plink --bfile ${bfile} \
---remove <(cat ${bfile}.kin0 | awk -v kinship=${kinship} '{if ($NF > kinship) print $0}') \
+--remove <(cat ${bfile}.kin0 | tail -n +2 | awk -v kinship=${kinship} '{if ($NF > kinship) print $0}' | \
+while read l; do if [[ $(grep -wFf <(echo ${l} | awk '{print $1,$2}') ${bfile}.fam | awk '{print $6}') -eq 1 ]]; then \
+echo ${l} | awk '{print $1,$2}' >> ${bfile}.related_excluded; echo ${l} | awk '{print $1,$2}'; \
+else echo ${l} | awk '{print $3,$4}' >> ${bfile}.related_excluded; echo ${l} | awk '{print $3,$4}'; fi; done) \
 --make-bed --out ${bfile}_norelated
-cat ${bfile}.kin0 | awk -v kinship=${kinship} '{if ($NF > kinship) print $0}'
-
 
 
 ############################################
