@@ -59,17 +59,17 @@ sbatch --job-name Minimac3_chr${chr} \
 done
 while squeue | grep Minimac3 > /dev/null; do sleep 5; done
 
+
 #########################################################################################
-### Chromosome X ########################################################################
-#########################################################################################
+
 %%bash
-# ChrX
+### Chromosome X
 bfile=""
 bcftools_plugins="/home/borisov/.conda/envs/borisov_env/bcftools-1.9/plugins"
 reference_fasta="/home/borisov/software/human_g1k_v37.fasta"
 n_threads=12
 
-## Preprocessing
+### Preprocessing
 # Excluding samples with undetermined sex
 # Removing males haploid heterozygous calls (should be done when X is splitted into PAR and nonPAR)
 plink --bfile ${bfile} \
@@ -82,11 +82,14 @@ plink --bfile ${bfile}_hh_missing --chr 25 --recode vcf --out ${bfile}_chr25
 plink --bfile ${bfile}_hh_missing --chr 23 --filter-females --recode vcf --out ${bfile}_chr23_females
 plink --bfile ${bfile}_hh_missing --chr 23 --filter-males --recode vcf --out ${bfile}_chr23_males
 
-# fixref
+# Fixing reference allele
 bcftools annotate --rename-chrs <(echo "25 X") ${bfile}_chr25.vcf | bcftools +fixref -- -f ${reference_fasta} -m flip -d | bcftools sort | bcftools norm --rm-dup all -Oz -o ${bfile}_ref_chrX_PAR.vcf.gz
 bcftools annotate --rename-chrs <(echo "23 X") ${bfile}_chr23_females.vcf | bcftools +fixref -- -f ${reference_fasta} -m flip -d | bcftools sort | bcftools norm --rm-dup all -Oz -o ${bfile}_ref_chrX_Female.Non.PAR.vcf.gz
 bcftools annotate --rename-chrs <(echo "23 X") ${bfile}_chr23_males.vcf | bcftools +fixref -- -f ${reference_fasta} -m flip -d | bcftools sort | bcftools norm --rm-dup all -Oz -o ${bfile}_ref_chrX_Male.Non.PAR.vcf.gz
 bcftools index ${bfile}_ref_chrX_PAR.vcf.gz; bcftools index ${bfile}_ref_chrX_Female.Non.PAR.vcf.gz; bcftools index ${bfile}_ref_chrX_Male.Non.PAR.vcf.gz
+
+# Remove temporary files
+rm ${bfile}*chr23* ${bfile}*chr25* ${bfile}*hh_missing*
 
 ### Phasing
 # Phasing PAR
@@ -124,7 +127,7 @@ sbatch --job-name Minimac3_chrX \
 --rsid \
 --lowMemory \
 --prefix ${bfile}_ref_chrX_PAR_phased_imputed" > /dev/null
-# Female.Non.PAR
+# Imputing Female.Non.PAR
 sbatch --job-name Minimac3_chrX \
 --cpus-per-task=1 --mem=48G --partition=medium --time=24:00:00 \
 --wrap="Minimac3 \
@@ -134,7 +137,7 @@ sbatch --job-name Minimac3_chrX \
 --rsid \
 --lowMemory \
 --prefix ${bfile}_ref_chrX_Female.Non.PAR_phased_imputed" > /dev/null
-# Male.Non.PAR
+# Imputing Male.Non.PAR
 sbatch --job-name Minimac3_chrX \
 --cpus-per-task=1 --mem=48G --partition=medium --time=24:00:00 \
 --wrap="Minimac3 \
@@ -146,10 +149,4 @@ sbatch --job-name Minimac3_chrX \
 --prefix ${bfile}_ref_chrX_Male.Non.PAR.gwas.data_imputed" > /dev/null
 while squeue | grep Minimac3 > /dev/null; do sleep 5; done
 
-# Remove temporary files
-rm ${bfile}*chr23* ${bfile}*chr25* ${bfile}*hh_missing*
-
-
-#########################################################################################
-### Copy statistics #####################################################################
-#########################################################################################
+### Copy statistics
