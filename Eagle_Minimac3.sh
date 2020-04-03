@@ -9,7 +9,7 @@ reference_fasta="/home/borisov/software/human_g1k_v37.fasta"
 for chr in {1..22}; do
     export BCFTOOLS_PLUGINS=${bcftools_plugins}
     sbatch --job-name fixref_chr${chr} \
-    --cpus-per-task=8 --mem=16G --time=05:00:00 \
+    --cpus-per-task=1 --mem=16G --time=05:00:00 \
     --wrap="
     plink --bfile ${bfile} --chr ${chr} --recode vcf --out ${bfile}_chr${chr}
     bcftools +fixref ${bfile}_chr${chr}.vcf -- -f ${reference_fasta} -m flip -d | bcftools sort | bcftools norm --rm-dup all -Oz -o ${bfile}_ref_chr${chr}.vcf.gz
