@@ -3,7 +3,7 @@ bfile=""
 plink2 --bfile ${bfile} \
 --covar ${bfile}_eigen.eigenvec \
 --covar-name PC1,PC2,PC3,PC4 \
---glm hide-covar \
+--glm hide-covar cols=chrom,pos,ref,alt,ax,test,nobs,orbeta,se,tz,p \
 --out ${bfile}_test_4pc
 
 %%R
