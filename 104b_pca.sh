@@ -1,14 +1,13 @@
 %%bash
 # performing pca with plink2
 bfile=""
-plink --bfile ${bfile} \
+plink2 --bfile ${bfile} \
 --indep-pairwise 1000 50 0.2 \
 --out ${bfile}_pruned > /dev/null 2>&1
-plink --bfile ${bfile} \
+#salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 srun \
+plink2 --bfile ${bfile} \
 --extract <(cat ${bfile}_pruned.prune.in) \
---make-bed --out ${bfile}_pruned
-salloc --mem=16000M --time=5:00:00 --cpus-per-task=20 \
-srun plink2 --bfile ${bfile}_pruned --pca --out ${bfile}_eigen
+--pca --out ${bfile}_eigen
 
 %%R
 bfile=""
