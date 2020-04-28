@@ -273,3 +273,39 @@ print(manhattan(rbind(pvec_4pc[P<5e-2], pvec_4pc[P>5e-2][seq(1,nrow(pvec_4pc[P>5
 print(qq(pvec_4pc$P))
 title(main = paste0("Lambda=", round(lambda,4)))
 
+
+%%R
+bfile=commandArgs(T)
+# libraries
+lapply(c("qqman", "RColorBrewer"), require, character.only = TRUE)
+# fread summary statistics
+sumstats=rbindlist(sapply(list.files(path=gsub("(.*)/.*", "\\1", bfile), pattern=paste0(gsub(".*/(.*)", "\\1", bfile), ".*.glm.logistic$"), full.names=T), fread, simplify=F))
+colnames(sumstats)[1:3]=c("CHR", "BP", "SNP")
+# adjusting CHR and p
+sumstats[CHR == "X", CHR := "23"]
+sumstats[CHR == "XY", CHR := "25"]
+sumstats[, CHR := as.numeric(CHR)]
+# adjusting SNP
+sumstats[, SNP := gsub(".*(rs[0-9]*).*", "\\1", SNP)]
+sumstats=sumstats[!is.na(sumstats$P) & P > 0]
+# calculating lambda https://www.biostars.org/p/298847/
+lambda <- median(qchisq(1 - sumstats$P, 1), na.rm=T) / qchisq(0.5, 1)
+# producing Manhattan plot
+jpeg(paste0(bfile, "_imputed_manh.jpeg"), width = 12, height = 6, units = "in", res = 600)
+manhattan_obj <- manhattan(rbind(sumstats[P<5e-2], sumstats[P>5e-2][seq(1,nrow(sumstats[P>5e-2]),10)]), chr="CHR", bp="BP", p="P", snp="SNP", annotatePval = 1, annotateTop = T, col=brewer.pal(8, "Dark2"))
+title(main = paste0(bfile, "_imputed_manhattan.jpeg"))
+dev.off()
+saveRDS(manhattan_obj, file = paste0(bfile, "_imputed_manhattan.rds"))
+# producing Q-Q plot
+jpeg(paste0(bfile, "_imputed_qq.jpeg"), width = 12, height = 6, units = "in", res = 600)
+qq_obj <- qq(sumstats$P)
+print(qq_obj)
+title(main = paste0(bfile, "_imputed_manhattan.jpeg"), sub = paste0("Lambda=", round(lambda,4)))
+dev.off()
+saveRDS(qq_obj, file = paste0(bfile, "_imputed_qq.rds"))
+# writing suggestive associations into a file
+fwrite(sumstats[P < 1e-5], paste0(bfile, "_imputed_suggestive.tsv"), sep="\t", na=NA, quote=F)
+fwrite(sumstats, paste0(bfile, "_imputed_all.tsv"), sep="\t", na=NA, quote=F)
+system(paste0("gzip -f ", bfile, "_imputed_suggestive.tsv ", bfile, "_imputed_all.tsv"))
+
+
