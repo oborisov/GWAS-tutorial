@@ -34,7 +34,7 @@ jupyter-notebook GWAS-tutorial.sos.ipynb
 ```
 
 ## Output
-*imputation-tools* outputs Manhattan and Q-Q plots:
+*GWAS-tutorial* produces Manhattan and Q-Q plots:
 ![Manhattan plot](results/GSA_sim_checkedsex_geno02_mind02_geno002_mind002_norelated.PHENO1.glm.logistic_manh.jpeg)
 ![Q-Q plot](results/GSA_sim_checkedsex_geno02_mind02_geno002_mind002_norelated.PHENO1.glm.logistic_qq.jpeg)
 
