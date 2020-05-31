@@ -12,5 +12,6 @@ dependencies:
 - sos-r
 - sos-bash
 - r-data.table
+- r-ggplot2
 - r-qqman
 - plink
