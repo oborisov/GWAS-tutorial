@@ -2,8 +2,8 @@
 
 This repository contains the tutorial for conducting main quality control steps and association testing for the genome-wide association studies (GWAS). It includes:
 1. Checking sex of samples
-2. Multiple QC (missingness, Hardy-Weinberg equilibrium, minor allele frequency)
-3. Seach for relatives
+2. Filtering samples and variants for missingness, filtering variants for Hardy-Weinberg equilibrium and minor allele frequency
+3. Search for relatives
 4. Principal component analysis
 5. Association testing
 
