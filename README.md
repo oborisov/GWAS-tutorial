@@ -15,7 +15,7 @@ For imputation, please refer to the [imputation-tools](https://github.com/oboris
 
 ## Installation
 ```
-git clone https://github.com/oborisov/imputation-tools.git  
+git clone https://github.com/oborisov/GWAS-tutorial.git  
 cd GWAS-tutorial
 gunzip data/GSA.bim.gz
 wget https://people.virginia.edu/~wc9c/KING/Linux-king.tar.gz
