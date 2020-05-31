@@ -1,0 +1,16 @@
+name: GWAS-tutorial
+channels:
+- conda-forge
+- r
+- bioconda
+dependencies:
+- sos
+- sos-pbs
+- sos-notebook
+- jupyterlab-sos
+- sos-papermill
+- sos-r
+- sos-bash
+- r-data.table
+- r-qqman
+- plink
