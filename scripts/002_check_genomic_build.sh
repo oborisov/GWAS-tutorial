@@ -1,9 +1,8 @@
 #### checking genomic build
-http://ncbi.nlm.nih.gov/snp/rs1000002  
-GRCh37.p13 chr 3 NC_000003.11:g.183635768C>T  
-GRCh38.p12 chr 3 NC_000003.12:g.183917980C>T  
-%%bash
-bfile=""
+#http://ncbi.nlm.nih.gov/snp/rs1000002  
+#GRCh37.p13 chr 3 NC_000003.11:g.183635768C>T  
+#GRCh38.p12 chr 3 NC_000003.12:g.183917980C>T  
+bfile="/home/borisov/nsCLP/LKG_2016_Polish/LKG_2016_Polish"
 grep -wF rs1000002 ${bfile}.bim
 
 
